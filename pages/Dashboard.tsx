@@ -1,5 +1,5 @@
 import React from 'react';
-import { Clock, CheckCircle2, Circle, Mail, Calendar as CalendarIcon } from 'lucide-react';
+import { Clock, CheckCircle2, Circle, Mail, Calendar as CalendarIcon, ArrowRight } from 'lucide-react';
 import GoalWidget from '../components/GoalWidget';
 import { Task, CalendarEvent, TaskPriority } from '../types';
 
@@ -18,41 +18,48 @@ const Dashboard: React.FC = () => {
     ];
 
     const schedule: CalendarEvent[] = [
-        { id: '1', title: 'Musha Shugyo Content Block', time: '7:00am', duration: '1.5h' },
-        { id: '2', title: 'Decopon: Hit List Build', time: '9:00am', duration: '3h', location: 'Deep Work' },
-        { id: '3', title: 'BJJ Training', time: '12:00pm', duration: '1h', location: 'Six Blades' },
-        { id: '4', title: 'Decopon: Email Batches', time: '1:00pm', duration: '3.5h' },
-        { id: '5', title: 'Evening Engagement', time: '8:00pm', duration: '15m' },
+        { id: '1', title: 'Musha Shugyo Content Block', time: '07:00', duration: '1.5h' },
+        { id: '2', title: 'Decopon: Hit List Build', time: '09:00', duration: '3h', location: 'Deep Work' },
+        { id: '3', title: 'BJJ Training', time: '12:00', duration: '1h', location: 'Six Blades' },
+        { id: '4', title: 'Decopon: Email Batches', time: '13:00', duration: '3.5h' },
+        { id: '5', title: 'Evening Engagement', time: '20:00', duration: '15m' },
     ];
 
     return (
         <div className="flex-1 overflow-y-auto p-8 max-w-[1600px] mx-auto">
             {/* Header / Brief Status */}
-            <div className="flex items-center gap-4 mb-6 text-slate-400 text-sm">
-                <div className="px-3 py-1 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-md flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                    Status: Phase 1 - Foundation
-                </div>
-                <div className="flex items-center gap-1">
-                    <Clock size={14} />
-                    <span>Mon, Jan 6, 8:45 AM</span>
+            <div className="flex justify-between items-end mb-8 border-b border-white/10 pb-4">
+                <div>
+                     <h2 className="text-3xl font-display font-bold text-white mb-2">COMMAND CENTER</h2>
+                     <div className="flex items-center gap-4 text-xs font-mono text-white/50">
+                        <div className="flex items-center gap-2 px-2 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-[2px] text-emerald-400">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            PHASE 1: FOUNDATION
+                        </div>
+                        <div className="flex items-center gap-1">
+                            <Clock size={12} />
+                            <span>MON, JAN 6 // 08:45</span>
+                        </div>
+                     </div>
                 </div>
             </div>
 
             {/* Overview Card */}
-            <div className="bg-slate-900/50 border border-amber-600/30 rounded-xl p-6 mb-8 relative overflow-hidden group">
-                <div className="absolute top-0 left-0 w-1 h-full bg-amber-600"></div>
+            <div className="stealth-card p-6 mb-8 relative group">
+                <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
                 <div className="flex items-start gap-4">
-                    <div className="mt-1 p-2 bg-amber-600/10 rounded-lg text-amber-500">
+                    <div className="mt-1 p-3 bg-emerald-500/5 border border-emerald-500/20 rounded-[2px] text-emerald-500">
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                     </div>
                     <div>
-                        <h2 className="text-lg font-bold text-slate-100 mb-2">Dual Mission Launch</h2>
-                        <p className="text-slate-300 leading-relaxed text-sm max-w-4xl">
-                            <strong>Launch Day for DecoponATX.</strong> Primary objective is building momentum with 50 contacts and 15 emails sent. 
+                        <h2 className="text-lg font-bold font-display text-white mb-2 tracking-wide">DUAL MISSION LAUNCH</h2>
+                        <p className="text-white/60 leading-relaxed text-sm max-w-4xl font-light">
+                            <strong className="text-white">Launch Day for DecoponATX.</strong> Primary objective is building momentum with 50 contacts and 15 emails sent. 
                             Musha Shugyo content rhythm is established. BJJ at noon provides the physical break needed for afternoon execution.
-                            Remember: <em>Revenue NOW. Don't wait.</em>
                         </p>
+                        <div className="mt-4 text-xs font-mono text-emerald-500/80 border-l border-emerald-500/20 pl-3">
+                            DIRECTIVE: REVENUE NOW. DON'T WAIT.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -64,31 +71,35 @@ const Dashboard: React.FC = () => {
                 <div className="lg:col-span-7 space-y-6">
                     
                     {/* Focus & Recommendations */}
-                    <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-                        <div className="flex items-center gap-2 mb-6">
-                            <div className="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
-                                <span className="font-bold">!</span>
+                    <div className="stealth-card p-6">
+                        <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
+                            <div className="flex items-center gap-2">
+                                <div className="text-emerald-500">
+                                    <span className="font-mono text-lg font-bold">!</span>
+                                </div>
+                                <h3 className="font-bold font-display text-white tracking-wide text-sm">CRITICAL ACTIONS</h3>
                             </div>
-                            <h3 className="font-bold text-slate-200">Critical Actions</h3>
+                            <span className="text-[10px] font-mono text-white/30">PRIORITY QUEUE</span>
                         </div>
 
                         {/* Top Priorities Section */}
                         <div className="mb-8">
-                            <h4 className="text-amber-500 text-sm font-semibold mb-4 flex items-center gap-2">
-                                <span className="w-4 h-4 rounded-full border border-amber-500 flex items-center justify-center text-[10px]">◎</span>
-                                Today's Targets
+                            <h4 className="text-white/40 text-[10px] font-bold font-mono uppercase tracking-widest mb-4 flex items-center gap-2">
+                                TODAY'S TARGETS
                             </h4>
-                            <div className="space-y-3">
+                            <div className="space-y-2">
                                 {todayTasks.map(task => (
-                                    <div key={task.id} className={`p-4 rounded-lg border flex items-start gap-3 transition-colors ${task.isCompleted ? 'bg-teal-900/10 border-teal-800/50 opacity-60' : 'bg-slate-800/50 border-slate-700 hover:border-slate-600'}`}>
-                                        {task.isCompleted ? <CheckCircle2 className="text-teal-500" size={20} /> : <Circle className="text-amber-500" size={20} />}
+                                    <div key={task.id} className={`p-4 rounded-[2px] border flex items-start gap-4 transition-all group ${task.isCompleted ? 'bg-white/5 border-white/10 opacity-50' : 'bg-[#0F0F0F] border-white/5 hover:border-emerald-500/30'}`}>
+                                        <div className="mt-0.5">
+                                            {task.isCompleted ? <CheckCircle2 className="text-emerald-500" size={16} /> : <Circle className="text-white/20 group-hover:text-emerald-500 transition-colors" size={16} />}
+                                        </div>
                                         <div className="flex-1">
-                                            <p className={`text-sm ${task.isCompleted ? 'text-teal-200 line-through' : 'text-slate-200'}`}>{task.title}</p>
-                                            {task.isCompleted && <span className="text-xs text-teal-500 mt-1 block">Completed</span>}
+                                            <p className={`text-sm font-medium ${task.isCompleted ? 'text-white/40 line-through decoration-white/20' : 'text-white'}`}>{task.title}</p>
+                                            
                                             {task.tags && !task.isCompleted && (
                                                 <div className="flex gap-2 mt-2">
                                                     {task.tags.map(tag => (
-                                                        <span key={tag} className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20">{tag}</span>
+                                                        <span key={tag} className="text-[10px] font-mono px-1.5 py-0.5 rounded-[2px] bg-white/5 text-white/50 border border-white/10">{tag}</span>
                                                     ))}
                                                 </div>
                                             )}
@@ -100,23 +111,22 @@ const Dashboard: React.FC = () => {
 
                         {/* Recommendations Section */}
                          <div>
-                            <h4 className="text-indigo-400 text-sm font-semibold mb-4 flex items-center gap-2">
-                                <span className="w-4 h-4 rounded-full border border-indigo-400 flex items-center justify-center text-[10px]">?</span>
-                                Co-Pilot Recommendations
+                            <h4 className="text-white/40 text-[10px] font-bold font-mono uppercase tracking-widest mb-4 flex items-center gap-2">
+                                CO-PILOT INTEL
                             </h4>
-                            <div className="space-y-3">
+                            <div className="space-y-2">
                                 {recommendations.map((rec, idx) => (
-                                    <div key={rec.id} className="group relative p-4 rounded-lg bg-slate-800/30 border border-slate-700/50 hover:bg-slate-800/60 transition-all flex gap-4 items-start">
-                                         <div className="w-6 h-6 rounded-full bg-slate-700 text-slate-300 font-bold flex items-center justify-center text-xs flex-shrink-0 mt-0.5">{idx + 1}</div>
+                                    <div key={rec.id} className="group relative p-4 rounded-[2px] bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-all flex gap-4 items-start">
+                                         <div className="w-5 h-5 rounded-sm bg-white/10 text-white/60 font-mono font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">{idx + 1}</div>
                                          <div className="flex-1">
                                             <div className="flex justify-between items-start">
-                                                <h5 className="text-slate-200 text-sm font-semibold">{rec.title}</h5>
+                                                <h5 className="text-white text-sm font-bold font-display tracking-wide">{rec.title}</h5>
                                                 <div className="flex gap-2">
-                                                    {rec.high && <span className="text-[10px] px-1.5 py-0.5 rounded bg-red-900/30 text-red-400 border border-red-900/50">High Impact</span>}
-                                                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-900/30 text-emerald-400 border border-emerald-900/50 font-mono">⚡{rec.score}%</span>
+                                                    {rec.high && <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-[2px] bg-red-500/10 text-red-400 border border-red-500/20">HIGH IMPACT</span>}
+                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-[2px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">⚡ {rec.score}%</span>
                                                 </div>
                                             </div>
-                                            <p className="text-slate-400 text-xs mt-1">{rec.desc}</p>
+                                            <p className="text-white/50 text-xs mt-1 font-light">{rec.desc}</p>
                                          </div>
                                     </div>
                                 ))}
@@ -132,29 +142,29 @@ const Dashboard: React.FC = () => {
                 <div className="lg:col-span-5 space-y-6">
                     
                      {/* Today's Schedule */}
-                     <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-                        <div className="flex items-center gap-2 mb-6">
-                            <CalendarIcon className="text-blue-400" size={20} />
-                            <h3 className="font-bold text-slate-200">Time Allocation</h3>
+                     <div className="stealth-card p-6">
+                        <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/5">
+                            <CalendarIcon className="text-white/40" size={16} />
+                            <h3 className="font-bold font-display text-white tracking-wide text-sm">TIME ALLOCATION</h3>
                         </div>
 
                         {/* Availability Summary */}
-                        <div className="space-y-2 mb-6 text-xs font-mono text-emerald-400/80">
-                            <div className="flex items-center gap-2"><CheckCircle2 size={12}/> <span>Musha Shugyo: 1h 45m / day</span></div>
-                            <div className="flex items-center gap-2"><CheckCircle2 size={12}/> <span>DecoponATX: 6-8h / day</span></div>
-                            <div className="flex items-center gap-2"><CheckCircle2 size={12}/> <span>Training: 1h (Mon/Wed)</span></div>
+                        <div className="space-y-3 mb-8 text-xs font-mono text-emerald-500/80 bg-emerald-900/10 p-4 rounded-[2px] border border-emerald-500/20">
+                            <div className="flex items-center gap-2"><div className="w-1 h-1 bg-emerald-500 rounded-full"></div> <span>MUSHA SHUGYO: 1H 45M / DAY</span></div>
+                            <div className="flex items-center gap-2"><div className="w-1 h-1 bg-emerald-500 rounded-full"></div> <span>DECOPONATX: 6-8H / DAY</span></div>
+                            <div className="flex items-center gap-2"><div className="w-1 h-1 bg-emerald-500 rounded-full"></div> <span>TRAINING: 1H (MON/WED)</span></div>
                         </div>
 
                         {/* Timeline */}
-                        <div className="relative space-y-6 pl-4 before:absolute before:left-[7px] before:top-2 before:h-full before:w-[2px] before:bg-slate-800">
+                        <div className="relative space-y-6 pl-4 before:absolute before:left-[5px] before:top-2 before:h-full before:w-[1px] before:bg-white/10">
                             {schedule.map((event) => (
-                                <div key={event.id} className="relative pl-6">
-                                    <div className={`absolute left-[-5px] top-1 w-3 h-3 rounded-full border-2 ${event.title.includes('BJJ') ? 'bg-slate-900 border-emerald-500' : 'bg-slate-900 border-amber-500'}`}></div>
-                                    <div className="text-xs text-slate-400 font-mono mb-0.5">{event.time}</div>
-                                    <div className="text-slate-200 font-medium text-sm">{event.title}</div>
-                                    <div className="flex gap-2 text-xs text-slate-500 mt-0.5">
-                                        <Clock size={12} /> {event.duration}
-                                        {event.location && <span>📍 {event.location}</span>}
+                                <div key={event.id} className="relative pl-6 group">
+                                    <div className={`absolute left-[-2px] top-1.5 w-[15px] h-[1px] ${event.title.includes('BJJ') ? 'bg-emerald-500' : 'bg-white/20'}`}></div>
+                                    <div className="text-xs text-white/30 font-mono mb-1">{event.time}</div>
+                                    <div className="text-white font-bold font-display text-sm group-hover:text-emerald-400 transition-colors">{event.title}</div>
+                                    <div className="flex gap-2 text-[10px] text-white/40 mt-1 font-mono uppercase tracking-wide">
+                                        <Clock size={10} /> {event.duration}
+                                        {event.location && <span>// {event.location}</span>}
                                     </div>
                                 </div>
                             ))}
@@ -162,39 +172,39 @@ const Dashboard: React.FC = () => {
                     </div>
 
                     {/* Email/Outreach Widget */}
-                    <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
-                        <div className="flex items-center justify-between mb-4">
-                            <div className="flex items-center gap-2">
-                                <Mail className="text-emerald-400" size={20} />
-                                <h3 className="font-bold text-slate-200">Decopon Outreach</h3>
+                    <div className="stealth-card p-6">
+                        <div className="flex items-center justify-between mb-6">
+                            <div className="flex items-center gap-3">
+                                <Mail className="text-white/40" size={16} />
+                                <h3 className="font-bold font-display text-white tracking-wide text-sm">DECOPON OUTREACH</h3>
                             </div>
-                            <span className="text-2xl font-bold text-slate-100">0/90</span>
+                            <span className="text-2xl font-bold font-display text-white">0<span className="text-white/30 text-lg">/90</span></span>
                         </div>
                         
-                        <div className="grid grid-cols-3 gap-3 mb-6">
-                            <div className="bg-slate-800/50 border border-slate-700 rounded p-2 text-center">
-                                <div className="text-slate-300 font-bold text-lg">50</div>
-                                <div className="text-[10px] text-slate-500 uppercase tracking-wider">Prospects</div>
+                        <div className="grid grid-cols-3 gap-2 mb-6">
+                            <div className="bg-white/5 border border-white/10 rounded-[2px] p-3 text-center hover:bg-white/10 transition-colors cursor-pointer">
+                                <div className="text-white font-bold text-lg font-display">50</div>
+                                <div className="text-[9px] text-white/40 uppercase tracking-widest font-mono mt-1">PROSPECTS</div>
                             </div>
-                            <div className="bg-amber-900/20 border border-amber-900/50 rounded p-2 text-center">
-                                <div className="text-amber-400 font-bold text-lg">0</div>
-                                <div className="text-[10px] text-amber-300/70 uppercase tracking-wider">Replies</div>
+                            <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-[2px] p-3 text-center">
+                                <div className="text-emerald-400 font-bold text-lg font-display">0</div>
+                                <div className="text-[9px] text-emerald-500/60 uppercase tracking-widest font-mono mt-1">REPLIES</div>
                             </div>
-                            <div className="bg-emerald-900/20 border border-emerald-900/50 rounded p-2 text-center">
-                                <div className="text-emerald-400 font-bold text-lg">0</div>
-                                <div className="text-[10px] text-emerald-300/70 uppercase tracking-wider">Calls</div>
+                            <div className="bg-white/5 border border-white/10 rounded-[2px] p-3 text-center">
+                                <div className="text-white font-bold text-lg font-display">0</div>
+                                <div className="text-[9px] text-white/40 uppercase tracking-widest font-mono mt-1">CALLS</div>
                             </div>
                         </div>
 
-                        <div className="space-y-3">
-                            <div className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Next Batches</div>
-                            <div className="bg-slate-800/40 border-l-2 border-amber-500 p-3 rounded-r text-xs text-slate-300 flex justify-between">
-                                <span>Warm Outreach (Google Friend)</span>
-                                <span className="text-slate-500">1:00 PM</span>
+                        <div className="space-y-2">
+                            <div className="text-[9px] text-white/30 font-bold font-mono uppercase tracking-widest mb-2">NEXT BATCHES</div>
+                            <div className="bg-[#0F0F0F] border-l-2 border-emerald-500 p-3 flex justify-between items-center hover:bg-white/5 transition-colors">
+                                <span className="text-xs text-white/80 font-medium">Warm Outreach (Google Friend)</span>
+                                <span className="text-white/30 font-mono text-[10px]">13:00</span>
                             </div>
-                            <div className="bg-slate-800/40 border-l-2 border-slate-600 p-3 rounded-r text-xs text-slate-300 flex justify-between">
-                                <span>Batch 1 (5 Emails)</span>
-                                <span className="text-slate-500">1:30 PM</span>
+                            <div className="bg-[#0F0F0F] border-l-2 border-white/20 p-3 flex justify-between items-center hover:bg-white/5 transition-colors">
+                                <span className="text-xs text-white/60">Batch 1 (5 Emails)</span>
+                                <span className="text-white/30 font-mono text-[10px]">13:30</span>
                             </div>
                         </div>
                     </div>

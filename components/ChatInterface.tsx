@@ -1,12 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageSquare, Send, X, Mic, Maximize2, Sparkles, ChevronDown } from 'lucide-react';
+import { MessageSquare, Send, Mic, Maximize2, ChevronDown } from 'lucide-react';
 import { sendMessageToGemini } from '../services/geminiService';
 import { Message } from '../types';
 
 const ChatInterface: React.FC = () => {
     const [isOpen, setIsOpen] = useState(true);
     const [messages, setMessages] = useState<Message[]>([
-        { id: '0', role: 'model', text: 'Hey, what can I help with?', timestamp: new Date() }
+        { id: '0', role: 'model', text: 'System Online. Ready for directives.', timestamp: new Date() }
     ]);
     const [input, setInput] = useState('');
     const [isThinking, setIsThinking] = useState(false);
@@ -58,55 +58,55 @@ const ChatInterface: React.FC = () => {
         return (
             <button 
                 onClick={() => setIsOpen(true)}
-                className="fixed bottom-6 right-6 w-14 h-14 bg-amber-400 rounded-full flex items-center justify-center shadow-lg hover:bg-amber-300 transition-all z-50 text-slate-900"
+                className="fixed bottom-6 right-6 w-12 h-12 bg-white text-black rounded-sm flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.1)] hover:bg-white/90 transition-all z-50 group"
             >
-                <MessageSquare size={24} fill="currentColor" />
+                <MessageSquare size={20} className="group-hover:scale-110 transition-transform" />
             </button>
         );
     }
 
     return (
-        <div className="fixed right-6 bottom-6 w-[400px] h-[600px] bg-slate-950/95 backdrop-blur-md border border-slate-700 rounded-2xl flex flex-col shadow-2xl z-50 overflow-hidden flex flex-col">
+        <div className="fixed right-6 bottom-6 w-[400px] h-[600px] bg-[#0A0A0A]/95 backdrop-blur-md border border-white/10 rounded-[2px] flex flex-col shadow-2xl z-50 overflow-hidden">
             {/* Header */}
-            <div className="p-4 border-b border-slate-800 flex justify-between items-center bg-slate-900/50">
-                <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 bg-amber-400 rounded flex items-center justify-center text-slate-900 font-bold text-xs">⚡</div>
-                    <span className="font-semibold text-slate-200">JFDI Assistant</span>
+            <div className="p-4 border-b border-white/10 flex justify-between items-center bg-white/[0.02]">
+                <div className="flex items-center gap-3">
+                    <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                    <span className="font-bold font-display text-white text-sm tracking-wide">MUSHA SHUGYO CO-PILOT</span>
                 </div>
-                <div className="flex gap-3 text-slate-400">
-                    <button className="hover:text-slate-200"><Maximize2 size={16} /></button>
-                    <button onClick={() => setIsOpen(false)} className="hover:text-slate-200"><ChevronDown size={20} /></button>
+                <div className="flex gap-4 text-white/40">
+                    <button className="hover:text-white transition-colors"><Maximize2 size={14} /></button>
+                    <button onClick={() => setIsOpen(false)} className="hover:text-white transition-colors"><ChevronDown size={18} /></button>
                 </div>
             </div>
 
-            {/* Background Pattern */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-0" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)', backgroundSize: '24px 24px' }}></div>
-
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 z-10 scrollbar-thin scrollbar-thumb-slate-700">
+            <div className="flex-1 overflow-y-auto p-4 space-y-6 z-10 scrollbar-thin scrollbar-thumb-white/10">
                 {messages.length === 1 && (
-                    <div className="flex flex-col items-center justify-center h-full text-slate-500 gap-4 mt-10">
-                         <div className="w-16 h-16 bg-amber-400 rounded-2xl flex items-center justify-center text-slate-900 font-bold text-3xl shadow-lg shadow-amber-400/20 mb-4">
-                            ⚡
+                    <div className="flex flex-col items-center justify-center h-full text-white/30 gap-6 mt-10">
+                         <div className="w-16 h-16 border border-white/10 rounded-sm flex items-center justify-center text-white/80 font-bold text-2xl font-display">
+                            武
                         </div>
-                        <p className="text-center text-sm">I can check your email, manage your calendar,<br/>create reminders, and more.</p>
+                        <p className="text-center text-xs font-mono uppercase tracking-widest">
+                            Awaiting Orders<br/>
+                            <span className="text-white/20 normal-case tracking-normal">Sovereignty checks. Content drafting. System config.</span>
+                        </p>
                         <div className="flex gap-2">
-                            <button className="px-3 py-1.5 bg-slate-800 rounded-full text-xs text-slate-300 hover:bg-slate-700 border border-slate-700">Check overdue tasks</button>
-                            <button className="px-3 py-1.5 bg-slate-800 rounded-full text-xs text-slate-300 hover:bg-slate-700 border border-slate-700">Draft newsletter</button>
+                            <button className="px-3 py-2 bg-white/5 hover:bg-white/10 rounded-[2px] text-[10px] text-white/60 border border-white/10 font-mono uppercase transition-colors">Draft Tweet</button>
+                            <button className="px-3 py-2 bg-white/5 hover:bg-white/10 rounded-[2px] text-[10px] text-white/60 border border-white/10 font-mono uppercase transition-colors">Check Resistance</button>
                         </div>
                     </div>
                 )}
                 
                 {messages.map((msg, idx) => (
-                    <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                        {msg.role === 'model' && (
-                             <div className="w-8 h-8 mr-2 bg-amber-400 rounded flex-shrink-0 flex items-center justify-center text-slate-900 text-xs font-bold">⚡</div>
-                        )}
+                    <div key={idx} className={`flex flex-col ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
+                        <div className={`text-[10px] font-mono mb-1 uppercase tracking-wider ${msg.role === 'user' ? 'text-white/30' : 'text-emerald-500/60'}`}>
+                            {msg.role === 'user' ? 'OPERATOR' : 'SYSTEM'}
+                        </div>
                         <div 
-                            className={`max-w-[80%] px-4 py-3 rounded-2xl text-sm leading-relaxed ${
+                            className={`max-w-[85%] px-4 py-3 rounded-[2px] text-xs leading-relaxed font-mono ${
                                 msg.role === 'user' 
-                                ? 'bg-slate-800 text-slate-200 rounded-tr-none' 
-                                : 'bg-transparent text-slate-300'
+                                ? 'bg-white/10 text-white border border-white/5' 
+                                : 'bg-emerald-500/5 text-white/80 border border-emerald-500/10'
                             }`}
                         >
                             {msg.text}
@@ -115,12 +115,12 @@ const ChatInterface: React.FC = () => {
                 ))}
                 
                 {isThinking && (
-                    <div className="flex justify-start">
-                         <div className="w-8 h-8 mr-2 bg-amber-400 rounded flex-shrink-0 flex items-center justify-center text-slate-900 text-xs font-bold">⚡</div>
-                         <div className="bg-slate-900 px-4 py-3 rounded-2xl flex gap-1 items-center">
-                            <span className="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce"></span>
-                            <span className="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce delay-75"></span>
-                            <span className="w-1.5 h-1.5 bg-slate-500 rounded-full animate-bounce delay-150"></span>
+                    <div className="flex flex-col items-start">
+                         <div className="text-[10px] font-mono mb-1 uppercase tracking-wider text-emerald-500/60">SYSTEM</div>
+                         <div className="bg-emerald-500/5 px-4 py-3 rounded-[2px] border border-emerald-500/10 flex gap-1 items-center">
+                            <span className="w-1 h-1 bg-emerald-500 rounded-full animate-bounce"></span>
+                            <span className="w-1 h-1 bg-emerald-500 rounded-full animate-bounce delay-75"></span>
+                            <span className="w-1 h-1 bg-emerald-500 rounded-full animate-bounce delay-150"></span>
                          </div>
                     </div>
                 )}
@@ -128,25 +128,22 @@ const ChatInterface: React.FC = () => {
             </div>
 
             {/* Input */}
-            <div className="p-4 bg-slate-900/80 border-t border-slate-800 z-10">
+            <div className="p-4 bg-[#0A0A0A] border-t border-white/10 z-10">
                 <div className="relative">
                     <textarea 
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        placeholder="What do you want to JFDI?"
-                        className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 pr-24 text-sm text-slate-200 focus:outline-none focus:border-amber-500/50 focus:ring-1 focus:ring-amber-500/50 resize-none h-14"
+                        placeholder="INPUT DIRECTIVE..."
+                        className="w-full bg-[#050505] border border-white/10 rounded-[2px] px-4 py-3 pr-20 text-xs text-white font-mono focus:outline-none focus:border-white/30 transition-colors resize-none h-12 placeholder:text-white/20"
                     />
                     <div className="absolute right-2 top-2 flex items-center gap-1">
-                        <button className="p-2 text-slate-500 hover:text-slate-300 rounded-lg hover:bg-slate-800">
-                             <Mic size={18} />
-                        </button>
                          <button 
                             onClick={handleSend}
                             disabled={!input.trim()}
-                            className="p-2 bg-amber-400/10 text-amber-400 hover:bg-amber-400 hover:text-slate-900 rounded-lg transition-colors disabled:opacity-50"
+                            className="p-1.5 bg-white text-black hover:bg-white/90 rounded-[2px] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                             <Send size={18} />
+                             <Send size={14} />
                         </button>
                     </div>
                 </div>

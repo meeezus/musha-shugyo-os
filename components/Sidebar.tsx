@@ -17,25 +17,25 @@ const Sidebar: React.FC = () => {
     const location = useLocation();
 
     const navItems = [
-        { icon: Home, label: 'Command', path: '/' },
-        { icon: FolderKanban, label: 'Projects', path: '/projects' },
-        { icon: Calendar, label: 'Schedule', path: '/calendar' },
-        { icon: Users, label: 'Relationships', path: '/relationships' },
-        { icon: Sword, label: 'Training Log', path: '/training' },
-        { icon: BookOpen, label: 'Knowledge', path: '/knowledge' },
-        { icon: Sparkles, label: 'Sparkfile', path: '/sparkfile' },
+        { icon: Home, label: 'COMMAND', path: '/' },
+        { icon: FolderKanban, label: 'PROJECTS', path: '/projects' },
+        { icon: Calendar, label: 'SCHEDULE', path: '/calendar' },
+        { icon: Users, label: 'RELATIONSHIPS', path: '/relationships' },
+        { icon: Sword, label: 'TRAINING LOG', path: '/training' },
+        { icon: BookOpen, label: 'KNOWLEDGE', path: '/knowledge' },
+        { icon: Sparkles, label: 'SPARKFILE', path: '/sparkfile' },
     ];
 
     return (
-        <div className="w-64 bg-slate-900 border-r border-slate-800 flex flex-col h-screen text-slate-400 font-medium text-sm flex-shrink-0">
+        <div className="w-64 bg-[#050505]/95 backdrop-blur-sm border-r border-white/10 flex flex-col h-screen text-white/40 font-medium text-sm flex-shrink-0">
             {/* Branding */}
-            <div className="p-6 flex items-center gap-3 text-slate-100 mb-2">
-                <div className="w-8 h-8 bg-amber-600 rounded-lg flex items-center justify-center text-slate-900 font-bold text-lg">
+            <div className="p-6 flex items-center gap-4 text-white mb-2">
+                 <div className="w-8 h-8 bg-white text-black rounded-sm flex items-center justify-center font-bold text-lg">
                     武
                 </div>
                 <div>
-                    <h1 className="font-bold text-base leading-none tracking-tight">Musha Shugyo</h1>
-                    <span className="text-xs text-slate-500 font-normal">PersonalOS v1.0</span>
+                    <h1 className="font-display font-bold text-sm tracking-[0.1em] uppercase leading-none">Musha Shugyo</h1>
+                    <span className="text-[10px] text-white/30 font-mono">OS v1.0 // STEALTH</span>
                 </div>
             </div>
 
@@ -48,30 +48,35 @@ const Sidebar: React.FC = () => {
                         <Link
                             key={item.path}
                             to={item.path}
-                            className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
+                            className={`flex items-center gap-3 px-3 py-3 rounded-[2px] transition-all duration-200 group ${
                                 isActive 
-                                ? 'bg-slate-800/80 text-amber-500 border-l-4 border-amber-500' 
-                                : 'hover:bg-slate-800/50 hover:text-slate-200'
+                                ? 'bg-white/10 text-white border-l-2 border-emerald-500' 
+                                : 'hover:bg-white/5 hover:text-white border-l-2 border-transparent'
                             }`}
                         >
-                            <Icon size={18} className={isActive ? 'text-amber-500' : 'text-slate-500'} />
-                            <span>{item.label}</span>
+                            <Icon size={16} className={isActive ? 'text-emerald-500' : 'text-white/40 group-hover:text-white'} />
+                            <span className="font-mono text-xs tracking-wide">{item.label}</span>
                         </Link>
                     );
                 })}
             </nav>
 
             {/* Bottom Admin/User */}
-            <div className="p-4 border-t border-slate-800 space-y-1">
-                 <button className="w-full flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-800/50 hover:text-slate-200 transition-colors">
-                    <Settings size={18} />
-                    <span>System Config</span>
+            <div className="p-4 border-t border-white/10 space-y-1">
+                 <button className="w-full flex items-center gap-3 px-3 py-2 rounded-[2px] hover:bg-white/5 hover:text-white transition-colors text-white/40 group">
+                    <Settings size={16} className="group-hover:rotate-90 transition-transform duration-500"/>
+                    <span className="font-mono text-xs">SYSTEM CONFIG</span>
                 </button>
-                <div className="pt-2 flex items-center gap-3 px-3">
-                    <img src="https://ui-avatars.com/api/?name=Michael+Enriquez&background=0F172A&color=F59E0B" alt="User" className="w-8 h-8 rounded-full border border-slate-600" />
+                <div className="pt-4 flex items-center gap-3 px-3">
+                    <div className="w-8 h-8 rounded-sm bg-emerald-900/20 border border-emerald-500/30 flex items-center justify-center text-emerald-500 font-bold text-xs">
+                        ME
+                    </div>
                     <div className="flex flex-col">
-                        <span className="text-slate-200 text-xs font-bold">Michael Enriquez</span>
-                        <span className="text-slate-500 text-[10px]">Sovereign Mode</span>
+                        <span className="text-white text-xs font-bold font-display uppercase tracking-wider">Michael Enriquez</span>
+                        <span className="text-emerald-500/60 text-[10px] font-mono flex items-center gap-1">
+                            <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                            SOVEREIGN MODE
+                        </span>
                     </div>
                 </div>
             </div>

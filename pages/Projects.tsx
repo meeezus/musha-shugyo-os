@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Project, ProjectStatus } from '../types';
-import { ChevronDown, MoreHorizontal } from 'lucide-react';
+import { ChevronDown, MoreHorizontal, ArrowUpRight } from 'lucide-react';
 
 const Projects: React.FC = () => {
     const [view, setView] = useState<'All' | 'Active' | 'Someday'>('Active');
@@ -8,8 +8,8 @@ const Projects: React.FC = () => {
     const projects: Project[] = [
         { 
             id: '1', 
-            name: 'DecoponATX Launch', 
-            space: 'Pillar 1: Entrepreneurship', 
+            name: 'DECOPON ATX', 
+            space: 'PILLAR 1: ENTREPRENEURSHIP', 
             progress: 10, 
             status: ProjectStatus.Attention, 
             taskCount: 90, 
@@ -17,8 +17,8 @@ const Projects: React.FC = () => {
         },
         { 
             id: '2', 
-            name: 'Musha Shugyo Brand', 
-            space: 'Pillar 1/2: Personal Brand', 
+            name: 'MUSHA SHUGYO BRAND', 
+            space: 'PILLAR 1/2: PERSONAL BRAND', 
             progress: 25, 
             status: ProjectStatus.Healthy, 
             taskCount: 3, 
@@ -26,8 +26,8 @@ const Projects: React.FC = () => {
         },
         { 
             id: '3', 
-            name: 'Health Coaching', 
-            space: 'Pillar 1: Income', 
+            name: 'HEALTH COACHING', 
+            space: 'PILLAR 1: INCOME', 
             progress: 80, 
             status: ProjectStatus.Stalled, 
             taskCount: 2, 
@@ -35,8 +35,8 @@ const Projects: React.FC = () => {
         },
         { 
             id: '4', 
-            name: 'BJJ White Belt Journey', 
-            space: 'Pillar 2: Martial Arts', 
+            name: 'BJJ WHITE BELT', 
+            space: 'PILLAR 2: MARTIAL ARTS', 
             progress: 5, 
             status: ProjectStatus.Healthy, 
             taskCount: 0, 
@@ -44,8 +44,8 @@ const Projects: React.FC = () => {
         },
         { 
             id: '5', 
-            name: 'PersonalOS Build', 
-            space: 'Pillar 3: Systems', 
+            name: 'PERSONAL OS', 
+            space: 'PILLAR 3: SYSTEMS', 
             progress: 40, 
             status: ProjectStatus.Healthy, 
             taskCount: 5, 
@@ -56,84 +56,86 @@ const Projects: React.FC = () => {
     return (
         <div className="flex-1 overflow-y-auto p-8">
             {/* Top Navigation / Stats */}
-            <div className="flex justify-center mb-8">
-                <div className="bg-slate-900 border border-slate-800 rounded-lg p-1 flex">
+            <div className="flex justify-center mb-10">
+                <div className="bg-[#0A0A0A] border border-white/10 rounded-[2px] p-1 flex">
                     <button 
                         onClick={() => setView('Active')}
-                        className={`px-8 py-2 rounded flex flex-col items-center ${view === 'Active' ? 'bg-amber-500 text-slate-900' : 'text-slate-400 hover:text-slate-200'}`}
+                        className={`px-8 py-2 rounded-[2px] flex flex-col items-center transition-all ${view === 'Active' ? 'bg-white text-black' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
                     >
-                        <span className="font-bold text-sm">Active</span>
-                        <span className="text-[10px] opacity-70">Focus</span>
+                        <span className="font-bold text-xs font-display uppercase tracking-wider">Active</span>
+                        <span className="text-[9px] opacity-60 font-mono mt-0.5">FOCUS</span>
                     </button>
                     <button 
                          onClick={() => setView('All')}
-                        className={`px-8 py-2 rounded flex flex-col items-center ${view === 'All' ? 'bg-amber-500 text-slate-900' : 'text-slate-400 hover:text-slate-200'}`}
+                        className={`px-8 py-2 rounded-[2px] flex flex-col items-center transition-all ${view === 'All' ? 'bg-white text-black' : 'text-white/40 hover:text-white hover:bg-white/5'}`}
                     >
-                        <span className="font-bold text-sm">All</span>
-                        <span className="text-[10px] opacity-70">Overview</span>
+                        <span className="font-bold text-xs font-display uppercase tracking-wider">All</span>
+                        <span className="text-[9px] opacity-60 font-mono mt-0.5">OVERVIEW</span>
                     </button>
                 </div>
             </div>
 
             {/* Content Area */}
-            <div className="max-w-4xl mx-auto">
-                <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-amber-500 text-sm font-bold flex items-center gap-2">
-                        Domain of Mastery <span className="text-slate-500 font-normal">({projects.length})</span>
+            <div className="max-w-5xl mx-auto">
+                <div className="flex justify-between items-end mb-6 pb-2 border-b border-white/5">
+                    <h2 className="text-white text-sm font-bold font-display uppercase tracking-wide flex items-center gap-2">
+                        Domain of Mastery <span className="text-white/30 font-mono">({projects.length})</span>
                     </h2>
-                    <div className="flex items-center gap-2 text-slate-500 text-xs">
-                        <span>Status</span>
+                    <div className="flex items-center gap-2 text-white/40 text-[10px] font-mono uppercase tracking-widest">
+                        <span>Status Indicators</span>
                     </div>
                 </div>
 
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 gap-4">
                     {projects.map(project => (
-                        <div key={project.id} className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden hover:border-slate-700 transition-all group">
-                            <div className="p-5">
+                        <div key={project.id} className="stealth-card group relative overflow-hidden">
+                            <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <ArrowUpRight className="text-white/20" size={20} />
+                            </div>
+                            
+                            <div className="p-6">
                                 {/* Header */}
-                                <div className="flex justify-between items-start mb-3">
+                                <div className="flex justify-between items-start mb-4">
                                     <div>
-                                        <h3 className="text-slate-100 font-bold text-lg">{project.name}</h3>
-                                        <div className="text-xs text-slate-500 uppercase tracking-wider">{project.space}</div>
+                                        <h3 className="text-white font-bold text-xl font-display tracking-tight mb-1">{project.name}</h3>
+                                        <div className="text-[10px] text-white/40 font-mono uppercase tracking-widest">{project.space}</div>
                                     </div>
-                                    <div className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${
+                                    <div className={`px-2 py-1 rounded-[2px] text-[10px] font-mono font-bold border uppercase tracking-wider ${
                                         project.status === ProjectStatus.Attention 
-                                        ? 'bg-amber-900/20 text-amber-400 border-amber-500/30' 
+                                        ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
                                         : project.status === ProjectStatus.Stalled
-                                        ? 'bg-slate-800 text-slate-400 border-slate-700'
-                                        : 'bg-emerald-900/20 text-emerald-400 border-emerald-500/30'
+                                        ? 'bg-white/5 text-white/40 border-white/10'
+                                        : 'bg-white/5 text-white/60 border-white/10'
                                     }`}>
-                                        ● {project.status}
+                                        {project.status === ProjectStatus.Attention && <span className="animate-pulse mr-1">●</span>}
+                                        {project.status}
                                     </div>
                                 </div>
 
                                 {/* Progress */}
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="flex-1 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                <div className="flex items-center gap-4 mb-6">
+                                    <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
                                         <div 
-                                            className="h-full bg-amber-500 rounded-full" 
+                                            className="h-full bg-white group-hover:bg-emerald-400 transition-colors duration-500" 
                                             style={{ width: `${project.progress}%` }}
                                         />
                                     </div>
-                                    <span className="text-xs font-mono text-slate-400 w-8 text-right">{project.progress}%</span>
+                                    <span className="text-xs font-mono text-white/40 w-8 text-right">{project.progress}%</span>
                                 </div>
 
-                                {/* Meta */}
-                                <div className="flex justify-between items-center text-xs text-slate-500">
-                                    <div className="flex items-center gap-2">
-                                        <span className="font-mono">Tasks: {project.taskCount}</span>
+                                {/* Footer Info */}
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-white/5">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+                                        <span className="text-white/70 text-xs font-mono truncate max-w-md">{project.nextAction}</span>
                                     </div>
-                                    <div className="flex items-center gap-1 px-2 py-1 rounded bg-slate-800 border border-slate-700 cursor-pointer hover:bg-slate-700">
-                                        Active <ChevronDown size={12} />
+                                    
+                                    <div className="flex items-center gap-4">
+                                        <div className="text-[10px] text-white/30 font-mono uppercase tracking-widest">
+                                            {project.taskCount} TASKS PENDING
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            
-                            {/* Next Action Footer */}
-                            <div className="bg-slate-800/30 border-t border-slate-800 px-5 py-3 flex items-center gap-3">
-                                <div className="w-1.5 h-1.5 rounded-full bg-blue-400"></div>
-                                <span className="text-slate-300 text-xs flex-1 truncate">{project.nextAction}</span>
-                                <MoreHorizontal size={14} className="text-slate-600 cursor-pointer" />
                             </div>
                         </div>
                     ))}

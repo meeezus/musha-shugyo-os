@@ -5,79 +5,75 @@ interface GoalProps {
     current: number;
     target: number;
     trend: string;
-    colorClass: string;
+    // Map old color classes to new semantic styles or ignore them
+    colorClass: string; 
     subtext?: string;
 }
 
-const GoalItem: React.FC<GoalProps> = ({ title, current, target, trend, colorClass, subtext }) => {
-    // Calculate percentage based on target being 100% of the bar conceptually, 
-    // or if inputs are raw numbers, we normalize.
-    // Assuming inputs are raw numbers here for Week 1 metrics.
+const GoalItem: React.FC<GoalProps> = ({ title, current, target, trend, subtext }) => {
     const percentage = Math.min((current / target) * 100, 100);
 
     return (
-        <div className="mb-4 last:mb-0">
-            <div className="flex justify-between items-end mb-1">
-                <span className="text-sm font-semibold text-slate-200">{title}</span>
-                <div className="flex gap-2 text-xs font-mono">
-                    <span className="text-slate-100 font-bold">{current}</span>
-                    <span className="text-slate-500">/ {target}</span>
-                    <span className={`px-1.5 rounded bg-slate-800 ${trend.startsWith('+') ? 'text-green-400' : 'text-slate-400'}`}>
+        <div className="mb-6 last:mb-0">
+            <div className="flex justify-between items-end mb-2">
+                <span className="text-xs font-bold font-display uppercase tracking-widest text-white/80">{title}</span>
+                <div className="flex gap-3 text-xs font-mono">
+                    <span className="text-white">{current} / {target}</span>
+                    <span className={`px-1.5 py-0.5 rounded-[2px] bg-white/5 border border-white/10 text-[10px] ${trend.startsWith('+') ? 'text-emerald-400' : 'text-white/40'}`}>
                         {trend}
                     </span>
                 </div>
             </div>
             {/* Progress Bar Container */}
-            <div className="h-2 w-full bg-slate-800 rounded-full overflow-hidden relative">
+            <div className="h-1 w-full bg-white/10 rounded-full overflow-hidden relative">
                 <div 
-                    className={`h-full rounded-full ${colorClass}`} 
+                    className="h-full bg-white transition-all duration-1000 ease-out" 
                     style={{ width: `${percentage}%` }} 
                 />
             </div>
-            {subtext && <div className="text-[10px] text-slate-500 mt-1 italic">{subtext}</div>}
+            {subtext && <div className="text-[10px] text-white/30 mt-1.5 font-mono">// {subtext}</div>}
         </div>
     );
 }
 
 const GoalWidget: React.FC = () => {
     return (
-        <div className="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-sm">
-            <div className="flex items-center gap-2 mb-4">
-                <div className="w-6 h-6 rounded-full bg-amber-900/30 text-amber-500 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+        <div className="stealth-card p-6">
+            <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/5">
+                <div className="w-8 h-8 rounded-sm bg-white/5 border border-white/10 flex items-center justify-center text-emerald-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
                 </div>
-                <h3 className="font-bold text-slate-200">Week 1 Targets</h3>
-            </div>
-
-            <div className="text-xs text-slate-400 mb-4 leading-relaxed">
-                "Dual Mission": Establish content rhythm & execute outreach volume.
+                <div>
+                    <h3 className="font-bold font-display text-white tracking-wide text-sm">WEEK 1 TARGETS</h3>
+                    <div className="text-[10px] text-white/40 font-mono mt-0.5">MISSION: CONTENT & OUTREACH</div>
+                </div>
             </div>
 
             <GoalItem 
-                title="Decopon Emails Sent" 
+                title="Decopon Emails" 
                 current={15} 
                 target={90} 
-                trend="On Track" 
-                colorClass="bg-green-500" 
-                subtext="Target: 20/day Tue-Thu"
+                trend="ON TRACK" 
+                colorClass="" // Ignored
+                subtext="TARGET: 20/DAY TUE-THU"
             />
 
              <GoalItem 
-                title="Musha Shugyo Tweets" 
+                title="Tweets Posted" 
                 current={6} 
                 target={15} 
-                trend="+3 today" 
-                colorClass="bg-amber-500" 
-                subtext="Consistency > Perfection"
+                trend="+3 TODAY" 
+                colorClass=""
+                subtext="CONSISTENCY > PERFECTION"
             />
 
              <GoalItem 
                 title="BJJ Sessions" 
                 current={1} 
                 target={2} 
-                trend="Mon done" 
-                colorClass="bg-indigo-500" 
-                subtext="Six Blades: Mon/Wed"
+                trend="MON DONE" 
+                colorClass="" 
+                subtext="SIX BLADES: MON/WED"
             />
         </div>
     );
