@@ -1,57 +1,29 @@
 import React, { useState } from 'react';
 import { Project, ProjectStatus } from '../types';
 import { ChevronDown, MoreHorizontal, ArrowUpRight } from 'lucide-react';
+import { useApp } from '../store/AppContext';
 
 const Projects: React.FC = () => {
+    const { projects, tasks } = useApp();
     const [view, setView] = useState<'All' | 'Active' | 'Someday'>('Active');
 
-    const projects: Project[] = [
-        { 
-            id: '1', 
-            name: 'DECOPON ATX', 
-            space: 'PILLAR 1: ENTREPRENEURSHIP', 
-            progress: 10, 
-            status: ProjectStatus.Attention, 
-            taskCount: 90, 
-            nextAction: 'Build hit list of 50 contacts using Apollo.io' 
-        },
-        { 
-            id: '2', 
-            name: 'MUSHA SHUGYO BRAND', 
-            space: 'PILLAR 1/2: PERSONAL BRAND', 
-            progress: 25, 
-            status: ProjectStatus.Healthy, 
-            taskCount: 3, 
-            nextAction: 'Draft 3 tweets for Tuesday morning block' 
-        },
-        { 
-            id: '3', 
-            name: 'HEALTH COACHING', 
-            space: 'PILLAR 1: INCOME', 
-            progress: 80, 
-            status: ProjectStatus.Stalled, 
-            taskCount: 2, 
-            nextAction: 'Reactivate and find 1-2 pilot clients' 
-        },
-        { 
-            id: '4', 
-            name: 'BJJ WHITE BELT', 
-            space: 'PILLAR 2: MARTIAL ARTS', 
-            progress: 5, 
-            status: ProjectStatus.Healthy, 
-            taskCount: 0, 
-            nextAction: 'Attend Monday 12pm class at Six Blades' 
-        },
-        { 
-            id: '5', 
-            name: 'PERSONAL OS', 
-            space: 'PILLAR 3: SYSTEMS', 
-            progress: 40, 
-            status: ProjectStatus.Healthy, 
-            taskCount: 5, 
-            nextAction: 'Update metrics dashboard with Week 1 targets' 
-        },
-    ];
+    // Filter projects based on view
+    const filteredProjects = projects.filter(p => {
+        if (view === 'Active') return p.status !== ProjectStatus.Completed;
+        if (view === 'Someday') return p.status === ProjectStatus.Stalled;
+        return true;
+    });
+
+    // Helper to get task count
+    const getTaskCount = (projectId: string) => tasks.filter(t => t.projectId === projectId && !t.isCompleted).length;
+
+    // Helper to get next action text
+    const getNextAction = (projectId: string) => {
+        const projectTasks = tasks.filter(t => t.projectId === projectId && !t.isCompleted);
+        if (projectTasks.length === 0) return "No active tasks";
+        // Sort by priority/date simply
+        return projectTasks[0].title;
+    };
 
     return (
         <div className="flex-1 overflow-y-auto p-8">
@@ -79,7 +51,7 @@ const Projects: React.FC = () => {
             <div className="max-w-5xl mx-auto">
                 <div className="flex justify-between items-end mb-6 pb-2 border-b border-white/5">
                     <h2 className="text-white text-sm font-bold font-display uppercase tracking-wide flex items-center gap-2">
-                        Domain of Mastery <span className="text-white/30 font-mono">({projects.length})</span>
+                        Domain of Mastery <span className="text-white/30 font-mono">({filteredProjects.length})</span>
                     </h2>
                     <div className="flex items-center gap-2 text-white/40 text-[10px] font-mono uppercase tracking-widest">
                         <span>Status Indicators</span>
@@ -87,7 +59,7 @@ const Projects: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-1 gap-4">
-                    {projects.map(project => (
+                    {filteredProjects.map(project => (
                         <div key={project.id} className="stealth-card group relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
                                 <ArrowUpRight className="text-white/20" size={20} />
@@ -127,12 +99,12 @@ const Projects: React.FC = () => {
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-white/5">
                                     <div className="flex items-center gap-3">
                                         <div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-                                        <span className="text-white/70 text-xs font-mono truncate max-w-md">{project.nextAction}</span>
+                                        <span className="text-white/70 text-xs font-mono truncate max-w-md">{getNextAction(project.id)}</span>
                                     </div>
                                     
                                     <div className="flex items-center gap-4">
                                         <div className="text-[10px] text-white/30 font-mono uppercase tracking-widest">
-                                            {project.taskCount} TASKS PENDING
+                                            {getTaskCount(project.id)} TASKS PENDING
                                         </div>
                                     </div>
                                 </div>

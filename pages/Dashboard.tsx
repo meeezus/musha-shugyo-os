@@ -1,29 +1,23 @@
 import React from 'react';
-import { Clock, CheckCircle2, Circle, Mail, Calendar as CalendarIcon, ArrowRight } from 'lucide-react';
+import { Clock, CheckCircle2, Circle, Mail, Calendar as CalendarIcon, ArrowRight, RefreshCw } from 'lucide-react';
 import GoalWidget from '../components/GoalWidget';
-import { Task, CalendarEvent, TaskPriority } from '../types';
+import { useApp } from '../store/AppContext';
+import { Task } from '../types';
 
 const Dashboard: React.FC = () => {
-    // Based on Monday Jan 6 Plan
-    const todayTasks: Task[] = [
-        { id: '1', title: 'Write 3 tweets (White belt observations)', isCompleted: true, tags: ['Content', 'Done'], priority: TaskPriority.High },
-        { id: '2', title: 'Build Decopon hit list (50 contacts)', isCompleted: false, tags: ['Outreach', 'Deep Work'], priority: TaskPriority.High },
-        { id: '3', title: 'Send 15 warm outreach emails', isCompleted: false, tags: ['Outreach'], priority: TaskPriority.High },
-        { id: '4', title: 'Capture BJJ voice memo after training', isCompleted: false, tags: ['System'], priority: TaskPriority.Medium },
-    ];
+    const { tasks, toggleTask, userProfile, dispatchCommand } = useApp();
+    const [isRefreshing, setIsRefreshing] = React.useState(false);
 
-    const recommendations = [
-        { id: '1', title: 'Execute outreach batch 1', desc: '1:30-2:30pm block. Don\'t overthink tools.', high: true, score: 95 },
-        { id: '2', title: 'Weekly Planning Review', desc: 'Check SuperX analytics from weekend setup.', high: false, score: 80 }
-    ];
+    // Dynamic filtering for the "Focus" card
+    const highPriorityTasks = tasks.filter(t => !t.isCompleted && t.priority === 'High');
+    const todayTasks = highPriorityTasks.slice(0, 3); // Top 3
 
-    const schedule: CalendarEvent[] = [
-        { id: '1', title: 'Musha Shugyo Content Block', time: '07:00', duration: '1.5h' },
-        { id: '2', title: 'Decopon: Hit List Build', time: '09:00', duration: '3h', location: 'Deep Work' },
-        { id: '3', title: 'BJJ Training', time: '12:00', duration: '1h', location: 'Six Blades' },
-        { id: '4', title: 'Decopon: Email Batches', time: '13:00', duration: '3.5h' },
-        { id: '5', title: 'Evening Engagement', time: '20:00', duration: '15m' },
-    ];
+    const handleRefresh = async () => {
+        setIsRefreshing(true);
+        // Simulate a "Slash Command" running in background
+        await dispatchCommand('/refresh-status', {});
+        setIsRefreshing(false);
+    };
 
     return (
         <div className="flex-1 overflow-y-auto p-8 max-w-[1600px] mx-auto">
@@ -34,14 +28,21 @@ const Dashboard: React.FC = () => {
                      <div className="flex items-center gap-4 text-xs font-mono text-white/50">
                         <div className="flex items-center gap-2 px-2 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-[2px] text-emerald-400">
                             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                            PHASE 1: FOUNDATION
+                            {userProfile.mode.toUpperCase()} MODE
                         </div>
                         <div className="flex items-center gap-1">
                             <Clock size={12} />
-                            <span>MON, JAN 6 // 08:45</span>
+                            <span>{new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).toUpperCase()} // {new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                         </div>
                      </div>
                 </div>
+                <button 
+                    onClick={handleRefresh}
+                    className="flex items-center gap-2 px-3 py-2 bg-white/5 border border-white/10 rounded-[2px] text-xs font-mono text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+                >
+                    <RefreshCw size={12} className={isRefreshing ? "animate-spin" : ""} />
+                    {isRefreshing ? "SYNCING..." : "REFRESH STATUS"}
+                </button>
             </div>
 
             {/* Overview Card */}
@@ -89,23 +90,32 @@ const Dashboard: React.FC = () => {
                             </h4>
                             <div className="space-y-2">
                                 {todayTasks.map(task => (
-                                    <div key={task.id} className={`p-4 rounded-[2px] border flex items-start gap-4 transition-all group ${task.isCompleted ? 'bg-white/5 border-white/10 opacity-50' : 'bg-[#0F0F0F] border-white/5 hover:border-emerald-500/30'}`}>
-                                        <div className="mt-0.5">
-                                            {task.isCompleted ? <CheckCircle2 className="text-emerald-500" size={16} /> : <Circle className="text-white/20 group-hover:text-emerald-500 transition-colors" size={16} />}
+                                    <div 
+                                        key={task.id} 
+                                        onClick={() => toggleTask(task.id)}
+                                        className={`p-4 rounded-[2px] border flex items-start gap-4 transition-all group cursor-pointer ${task.isCompleted ? 'bg-white/5 border-white/10 opacity-50' : 'bg-[#0F0F0F] border-white/5 hover:border-emerald-500/30'}`}
+                                    >
+                                        <div className="mt-0.5 text-emerald-500">
+                                            {task.isCompleted ? <CheckCircle2 size={16} /> : <Circle size={16} className="text-white/20 group-hover:text-emerald-500" />}
                                         </div>
                                         <div className="flex-1">
                                             <p className={`text-sm font-medium ${task.isCompleted ? 'text-white/40 line-through decoration-white/20' : 'text-white'}`}>{task.title}</p>
                                             
-                                            {task.tags && !task.isCompleted && (
+                                            {task.energy && !task.isCompleted && (
                                                 <div className="flex gap-2 mt-2">
-                                                    {task.tags.map(tag => (
-                                                        <span key={tag} className="text-[10px] font-mono px-1.5 py-0.5 rounded-[2px] bg-white/5 text-white/50 border border-white/10">{tag}</span>
-                                                    ))}
+                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-[2px] bg-white/5 text-white/50 border border-white/10">
+                                                        {task.energy}
+                                                    </span>
                                                 </div>
                                             )}
                                         </div>
                                     </div>
                                 ))}
+                                {todayTasks.length === 0 && (
+                                    <div className="p-4 text-center text-white/30 font-mono text-xs border border-dashed border-white/10 rounded-[2px]">
+                                        No high priority tasks remaining. Good work.
+                                    </div>
+                                )}
                             </div>
                         </div>
 
@@ -115,21 +125,19 @@ const Dashboard: React.FC = () => {
                                 CO-PILOT INTEL
                             </h4>
                             <div className="space-y-2">
-                                {recommendations.map((rec, idx) => (
-                                    <div key={rec.id} className="group relative p-4 rounded-[2px] bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-all flex gap-4 items-start">
-                                         <div className="w-5 h-5 rounded-sm bg-white/10 text-white/60 font-mono font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">{idx + 1}</div>
-                                         <div className="flex-1">
-                                            <div className="flex justify-between items-start">
-                                                <h5 className="text-white text-sm font-bold font-display tracking-wide">{rec.title}</h5>
-                                                <div className="flex gap-2">
-                                                    {rec.high && <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-[2px] bg-red-500/10 text-red-400 border border-red-500/20">HIGH IMPACT</span>}
-                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-[2px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">⚡ {rec.score}%</span>
-                                                </div>
+                                <div className="group relative p-4 rounded-[2px] bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-all flex gap-4 items-start">
+                                     <div className="w-5 h-5 rounded-sm bg-white/10 text-white/60 font-mono font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">1</div>
+                                     <div className="flex-1">
+                                        <div className="flex justify-between items-start">
+                                            <h5 className="text-white text-sm font-bold font-display tracking-wide">Execute outreach batch 1</h5>
+                                            <div className="flex gap-2">
+                                                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-[2px] bg-red-500/10 text-red-400 border border-red-500/20">HIGH IMPACT</span>
+                                                <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-[2px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">⚡ 95%</span>
                                             </div>
-                                            <p className="text-white/50 text-xs mt-1 font-light">{rec.desc}</p>
-                                         </div>
-                                    </div>
-                                ))}
+                                        </div>
+                                        <p className="text-white/50 text-xs mt-1 font-light">1:30-2:30pm block. Don't overthink tools.</p>
+                                     </div>
+                                </div>
                             </div>
                         </div>
 
@@ -140,38 +148,33 @@ const Dashboard: React.FC = () => {
 
                 {/* Right Column (Schedule, Email, etc) */}
                 <div className="lg:col-span-5 space-y-6">
-                    
-                     {/* Today's Schedule */}
+                    {/* Widgets (Keeping them mostly static for simulation, but could link to state later) */}
                      <div className="stealth-card p-6">
                         <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/5">
                             <CalendarIcon className="text-white/40" size={16} />
                             <h3 className="font-bold font-display text-white tracking-wide text-sm">TIME ALLOCATION</h3>
                         </div>
-
-                        {/* Availability Summary */}
                         <div className="space-y-3 mb-8 text-xs font-mono text-emerald-500/80 bg-emerald-900/10 p-4 rounded-[2px] border border-emerald-500/20">
                             <div className="flex items-center gap-2"><div className="w-1 h-1 bg-emerald-500 rounded-full"></div> <span>MUSHA SHUGYO: 1H 45M / DAY</span></div>
                             <div className="flex items-center gap-2"><div className="w-1 h-1 bg-emerald-500 rounded-full"></div> <span>DECOPONATX: 6-8H / DAY</span></div>
                             <div className="flex items-center gap-2"><div className="w-1 h-1 bg-emerald-500 rounded-full"></div> <span>TRAINING: 1H (MON/WED)</span></div>
                         </div>
-
-                        {/* Timeline */}
                         <div className="relative space-y-6 pl-4 before:absolute before:left-[5px] before:top-2 before:h-full before:w-[1px] before:bg-white/10">
-                            {schedule.map((event) => (
-                                <div key={event.id} className="relative pl-6 group">
-                                    <div className={`absolute left-[-2px] top-1.5 w-[15px] h-[1px] ${event.title.includes('BJJ') ? 'bg-emerald-500' : 'bg-white/20'}`}></div>
-                                    <div className="text-xs text-white/30 font-mono mb-1">{event.time}</div>
-                                    <div className="text-white font-bold font-display text-sm group-hover:text-emerald-400 transition-colors">{event.title}</div>
-                                    <div className="flex gap-2 text-[10px] text-white/40 mt-1 font-mono uppercase tracking-wide">
-                                        <Clock size={10} /> {event.duration}
-                                        {event.location && <span>// {event.location}</span>}
-                                    </div>
-                                </div>
-                            ))}
+                            <div className="relative pl-6 group">
+                                <div className="absolute left-[-2px] top-1.5 w-[15px] h-[1px] bg-white/20"></div>
+                                <div className="text-xs text-white/30 font-mono mb-1">07:00</div>
+                                <div className="text-white font-bold font-display text-sm group-hover:text-emerald-400 transition-colors">Musha Shugyo Content Block</div>
+                                <div className="flex gap-2 text-[10px] text-white/40 mt-1 font-mono uppercase tracking-wide"><Clock size={10} /> 1.5h</div>
+                            </div>
+                            <div className="relative pl-6 group">
+                                <div className="absolute left-[-2px] top-1.5 w-[15px] h-[1px] bg-emerald-500"></div>
+                                <div className="text-xs text-white/30 font-mono mb-1">12:00</div>
+                                <div className="text-white font-bold font-display text-sm group-hover:text-emerald-400 transition-colors">BJJ Training</div>
+                                <div className="flex gap-2 text-[10px] text-white/40 mt-1 font-mono uppercase tracking-wide"><Clock size={10} /> 1h // Six Blades</div>
+                            </div>
                         </div>
                     </div>
 
-                    {/* Email/Outreach Widget */}
                     <div className="stealth-card p-6">
                         <div className="flex items-center justify-between mb-6">
                             <div className="flex items-center gap-3">
@@ -182,7 +185,7 @@ const Dashboard: React.FC = () => {
                         </div>
                         
                         <div className="grid grid-cols-3 gap-2 mb-6">
-                            <div className="bg-white/5 border border-white/10 rounded-[2px] p-3 text-center hover:bg-white/10 transition-colors cursor-pointer">
+                            <div className="bg-white/5 border border-white/10 rounded-[2px] p-3 text-center">
                                 <div className="text-white font-bold text-lg font-display">50</div>
                                 <div className="text-[9px] text-white/40 uppercase tracking-widest font-mono mt-1">PROSPECTS</div>
                             </div>
@@ -193,18 +196,6 @@ const Dashboard: React.FC = () => {
                             <div className="bg-white/5 border border-white/10 rounded-[2px] p-3 text-center">
                                 <div className="text-white font-bold text-lg font-display">0</div>
                                 <div className="text-[9px] text-white/40 uppercase tracking-widest font-mono mt-1">CALLS</div>
-                            </div>
-                        </div>
-
-                        <div className="space-y-2">
-                            <div className="text-[9px] text-white/30 font-bold font-mono uppercase tracking-widest mb-2">NEXT BATCHES</div>
-                            <div className="bg-[#0F0F0F] border-l-2 border-emerald-500 p-3 flex justify-between items-center hover:bg-white/5 transition-colors">
-                                <span className="text-xs text-white/80 font-medium">Warm Outreach (Google Friend)</span>
-                                <span className="text-white/30 font-mono text-[10px]">13:00</span>
-                            </div>
-                            <div className="bg-[#0F0F0F] border-l-2 border-white/20 p-3 flex justify-between items-center hover:bg-white/5 transition-colors">
-                                <span className="text-xs text-white/60">Batch 1 (5 Emails)</span>
-                                <span className="text-white/30 font-mono text-[10px]">13:30</span>
                             </div>
                         </div>
                     </div>
