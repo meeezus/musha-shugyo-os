@@ -1,0 +1,7 @@
+{
+  "name": "Musha Shugyo OS",
+  "description": "PersonalOS for Michael Enriquez: Sovereignty, Discipline, and Systems.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
