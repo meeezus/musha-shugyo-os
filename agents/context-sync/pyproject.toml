@@ -1,0 +1,15 @@
+[project]
+name = "context-sync"
+version = "0.2.0"
+description = "Syncs markdown context files to MSOS database"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "claude-code-sdk>=0.0.25",
+    "httpx>=0.28.1",
+    "watchfiles>=1.0.0",
+    "pyyaml>=6.0",
+]
+
+[project.scripts]
+context-sync = "context_sync.watcher:main"

@@ -1,6 +1,6 @@
 # Musha Shugyo OS (MSOS)
 
-A personal operating system for discipline, execution, and sovereignty. Built for ADHD minds that need structure without rigidity.
+A personal operating system for discipline, execution, and sovereignty. Built for hunter brains that need structure without rigidity.
 
 ## What is MSOS?
 

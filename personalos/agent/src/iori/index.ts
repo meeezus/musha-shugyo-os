@@ -12,17 +12,33 @@ interface Message {
   content: string;
 }
 
+interface RecentSession {
+  session_id: string;
+  started_at: string;
+  preview: string;
+  message_count: number;
+}
+
 interface ChatContext {
   goals: any[];
   tasks: any[];
   contacts: any[];
   user_name: string;
+  recent_sessions?: RecentSession[];
+}
+
+interface ImageData {
+  data: string; // base64 encoded
+  media_type: string;
 }
 
 interface ChatRequest {
   message: string;
   history: Message[];
   context: ChatContext;
+  model?: string;
+  image?: ImageData;
+  images?: ImageData[]; // Support for multiple images
 }
 
 interface Action {
@@ -33,6 +49,11 @@ interface Action {
 interface ChatResponse {
   response: string;
   actions: Action[];
+  usage?: {
+    input_tokens: number;
+    output_tokens: number;
+    model: string;
+  };
 }
 
 // ============================================
@@ -54,18 +75,31 @@ function buildSystemPrompt(apiContext: ChatContext): string {
 
   const today = dayjs().format('dddd, MMMM D, YYYY');
 
-  // Format API data
-  const goalsFormatted = apiContext.goals.map(g =>
-    `- ${g.title}: ${g.current}/${g.target} ${g.unit || ''}`
-  ).join('\n') || 'No goals set';
+  // Format API data with null safety
+  const goals = apiContext.goals || [];
+  const tasks = apiContext.tasks || [];
+  const contacts = apiContext.contacts || [];
 
-  const tasksFormatted = apiContext.tasks.map(t =>
-    `- [${t.priority?.toUpperCase() || 'MEDIUM'}] ${t.title}${t.due_date ? ` (due: ${t.due_date})` : ''}`
-  ).join('\n') || 'No pending tasks';
+  const goalsFormatted = goals.length > 0
+    ? goals.map(g => `- ${g.title}: ${g.current}/${g.target} ${g.unit || ''}`).join('\n')
+    : 'No goals set';
 
-  const contactsFormatted = apiContext.contacts.slice(0, 5).map(c =>
-    `- ${c.name}${c.last_contact ? ` (last: ${dayjs(c.last_contact).format('MMM D')})` : ''}`
-  ).join('\n') || 'No recent contacts';
+  const tasksFormatted = tasks.length > 0
+    ? tasks.map(t => `- [${t.priority?.toUpperCase() || 'MEDIUM'}] ${t.title}${t.due_date ? ` (due: ${t.due_date})` : ''}`).join('\n')
+    : 'No pending tasks';
+
+  const contactsFormatted = contacts.length > 0
+    ? contacts.slice(0, 5).map(c => `- ${c.name}${c.last_contact ? ` (last: ${dayjs(c.last_contact).format('MMM D')})` : ''}`).join('\n')
+    : 'No recent contacts';
+
+  // Format recent conversation history
+  const recentSessions = apiContext.recent_sessions || [];
+  const conversationHistory = recentSessions.length > 0
+    ? recentSessions.map(s => {
+        const sessionDate = dayjs(s.started_at).format('MMM D, h:mm A');
+        return `- [${sessionDate}] "${s.preview}" (${s.message_count} messages)`;
+      }).join('\n')
+    : 'No previous conversations';
 
   return `You are Iori, ${apiContext.user_name}'s Personal AI Assistant in MSOS (Musha Shugyo OS).
 
@@ -78,7 +112,7 @@ TODAY IS: ${today}
 YOUR ROLE & OPERATING PRINCIPLES
 =============================================================================
 
-${personalContext.claude ? personalContext.claude.substring(0, 2500) : 'Help Michael execute despite ADHD resistance patterns. Be action-oriented, non-judgmental about resistance, and focused on quick captures (30 seconds or less).'}
+${personalContext.claude ? personalContext.claude.substring(0, 2500) : 'Help Michael execute despite hunter-brain resistance patterns. Be action-oriented, non-judgmental about resistance, and focused on quick captures (30 seconds or less).'}
 
 =============================================================================
 CONTEXT FROM PERSONALOS (5 LAYERS)
@@ -98,6 +132,14 @@ ${tasksFormatted}
 
 **RECENT CONTACTS:**
 ${contactsFormatted}
+
+=============================================================================
+RECENT CONVERSATIONS
+=============================================================================
+
+These are your recent conversations with ${apiContext.user_name}. Use this context to maintain continuity and reference past discussions when relevant:
+
+${conversationHistory}
 
 =============================================================================
 YOUR CAPABILITIES
@@ -125,7 +167,7 @@ For regular conversation, just respond naturally without actions.
 COMMUNICATION STYLE
 =============================================================================
 
-- Be concise and direct (ADHD-friendly)
+- Be concise and direct (hunter-brain-friendly)
 - Use natural language, no rigid syntax
 - Focus on action over perfect planning
 - Non-judgmental about resistance or procrastination
@@ -210,15 +252,55 @@ export async function chat(request: ChatRequest): Promise<ChatResponse> {
     content: msg.content,
   }));
 
-  // Add current message
-  messages.push({
-    role: 'user',
-    content: request.message,
-  });
+  // Add current message (with images if present)
+  const imagesToSend = request.images || (request.image ? [request.image] : []);
+
+  if (imagesToSend.length > 0) {
+    const contentParts: Anthropic.ContentBlockParam[] = [];
+
+    // Add all images first
+    for (const img of imagesToSend) {
+      contentParts.push({
+        type: 'image',
+        source: {
+          type: 'base64',
+          media_type: img.media_type as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp',
+          data: img.data,
+        },
+      });
+    }
+
+    // Add the text message
+    contentParts.push({
+      type: 'text',
+      text: request.message,
+    });
+
+    messages.push({
+      role: 'user',
+      content: contentParts,
+    });
+  } else {
+    messages.push({
+      role: 'user',
+      content: request.message,
+    });
+  }
+
+  // Use requested model or default to Sonnet 4
+  const validModels = [
+    'claude-sonnet-4-20250514',
+    'claude-3-5-sonnet-20241022',
+    'claude-3-5-haiku-20241022',
+    'claude-opus-4-20250514',
+  ];
+  const model = request.model && validModels.includes(request.model)
+    ? request.model
+    : 'claude-sonnet-4-20250514';
 
   try {
     const response = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model,
       max_tokens: 2048,
       system: systemPrompt,
       messages,
@@ -234,13 +316,21 @@ export async function chat(request: ChatRequest): Promise<ChatResponse> {
     // Handle file-based actions (observations, episodes)
     const processedActions = await handleFileActions(actions);
 
+    // Extract usage info
+    const usage = response.usage ? {
+      input_tokens: response.usage.input_tokens,
+      output_tokens: response.usage.output_tokens,
+      model,
+    } : undefined;
+
     return {
       response: cleanResponse,
       actions: processedActions,
+      usage,
     };
 
   } catch (error) {
-    console.error('Jotaro chat error:', error);
+    console.error('Iori chat error:', error);
     throw error;
   }
 }

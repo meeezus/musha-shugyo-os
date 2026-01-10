@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\OuraData;
+use App\Models\ApiUsage;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -24,6 +25,9 @@ class DashboardController extends Controller
             $ouraInsights = $this->generateOuraInsights($ouraData, $user->id);
         }
 
+        // Get API usage stats
+        $apiUsage = $this->getApiUsageStats($user->id);
+
         return Inertia::render('Dashboard', [
             'goals' => $user->goals()->get(),
             'tasks' => $user->tasks()
@@ -37,6 +41,7 @@ class DashboardController extends Controller
             'contacts' => $user->contacts()->limit(5)->get(),
             'ouraData' => $ouraData,
             'ouraInsights' => $ouraInsights,
+            'apiUsage' => $apiUsage,
         ]);
     }
 
@@ -125,6 +130,46 @@ class DashboardController extends Controller
                 'sleepDuration' => $data->total_sleep_duration,
                 'steps' => $data->steps,
             ],
+        ];
+    }
+
+    private function getApiUsageStats(int $userId): array
+    {
+        $today = now()->startOfDay();
+        $thisMonth = now()->startOfMonth();
+
+        // Today's usage
+        $todayUsage = ApiUsage::where('user_id', $userId)
+            ->where('timestamp', '>=', $today)
+            ->selectRaw('SUM(input_tokens) as input_tokens, SUM(output_tokens) as output_tokens, SUM(cost_usd) as cost_usd, COUNT(*) as requests')
+            ->first();
+
+        // This month's usage
+        $monthUsage = ApiUsage::where('user_id', $userId)
+            ->where('timestamp', '>=', $thisMonth)
+            ->selectRaw('SUM(input_tokens) as input_tokens, SUM(output_tokens) as output_tokens, SUM(cost_usd) as cost_usd, COUNT(*) as requests')
+            ->first();
+
+        // Recent requests (last 5)
+        $recentRequests = ApiUsage::where('user_id', $userId)
+            ->orderBy('timestamp', 'desc')
+            ->limit(5)
+            ->get(['model', 'input_tokens', 'output_tokens', 'cost_usd', 'timestamp']);
+
+        return [
+            'today' => [
+                'input_tokens' => (int) ($todayUsage->input_tokens ?? 0),
+                'output_tokens' => (int) ($todayUsage->output_tokens ?? 0),
+                'cost_usd' => (float) ($todayUsage->cost_usd ?? 0),
+                'requests' => (int) ($todayUsage->requests ?? 0),
+            ],
+            'month' => [
+                'input_tokens' => (int) ($monthUsage->input_tokens ?? 0),
+                'output_tokens' => (int) ($monthUsage->output_tokens ?? 0),
+                'cost_usd' => (float) ($monthUsage->cost_usd ?? 0),
+                'requests' => (int) ($monthUsage->requests ?? 0),
+            ],
+            'recent' => $recentRequests,
         ];
     }
 }

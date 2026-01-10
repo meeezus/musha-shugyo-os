@@ -85,7 +85,7 @@ Men 25-45 who:
 
 ---
 
-## Daily System (ADHD-Optimized)
+## Daily System (Hunter-Brain-Optimized)
 
 ### Morning Block (30 min total)
 
@@ -407,7 +407,7 @@ Everything connects.
 **Week 5:** "90 Emails in 5 Days" (DecoponATX retrospective)
 **Week 6:** "What Your Doctor Won't Tell You"
 **Week 7:** "Musha Shugyo: The Warrior's Pilgrimage"
-**Week 8:** "The Resistance Voice" (ADHD-friendly framing without victim lens)
+**Week 8:** "The Resistance Voice" (hunter-brain framing without victim lens)
 
 ---
 
@@ -575,7 +575,7 @@ Claude can compile these weekly into a "Resistance Report" for reflection.
 
 ## Important Notes
 
-- No victim framing around ADHD — reframe as "brain that needs different systems"
+- No victim framing — use "hunter brain" (brain that needs different systems, not a disorder)
 - No spouse mentions — keep personal life private
 - DecoponATX stays separate from personal brand content
 - Voice memo is primary capture method — reduces friction

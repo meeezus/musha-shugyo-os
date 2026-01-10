@@ -2,7 +2,7 @@
 
 ## Priority Order
 1. **Health Recovery** - Non-negotiable, time-based healing
-2. **DecoponATX** - Cash flow (bills need to get paid)
+2. **Automation Agency** - Cash flow (90-day sprint: $17K/2 clients) via property management & SMB automation
 3. **Musha Shugyo + Digital Economics** - Audience/skill building (longer-term play)
 
 ## The Beginner Thought Leader Mindset
@@ -10,7 +10,7 @@
 **You're not teaching from the finish line. You're documenting the journey.**
 
 - You're 2-3 steps ahead of someone starting - that's the perfect position to teach from
-- Your struggle IS the content - "Building sovereignty despite nerve damage and ADHD" is MORE relatable than guru bullshit
+- Your struggle IS the content - "Building sovereignty despite nerve damage and a hunter brain" is MORE relatable than guru bullshit
 - The beginner's advantage: You speak the language of people who are stuck RIGHT NOW
 - Digital Economics "Experience Model": Share your real experience, not pretend expertise
 
@@ -34,49 +34,110 @@ You are. That's enough.
 - **NO PRESSURE:** No tweets, no content, no business outreach
 - **VIBE:** Low pressure, high curiosity
 
-### Week 1 Mission (Jan 6-10): DecoponATX Email Challenge
-- **Target:** 90 cold emails to Austin companies
-- **Daily Schedule:** 15-20 emails per day
-- **Morning Block:** 7am-9am prep work
-- **Core Hours:** 9am-5pm outreach
-- **Purpose:** Prove execution capability, generate first discovery calls
+### Week 1 Mission (Jan 6-12): DecoponATX V3 Launch - Video → Landing Page → Email
+**Track A: DecoponATX Hero Video + Landing Page (Primary)**
+- Create hero video (Day 1-2): Finished cases, process, experience, outcomes
+- Draft landing page (Day 3-5): Hero video, gallery, how-it-works, email capture
+- Text warm network asking for referrals (Day 1)
+- Prepare for Week 2 email outreach
+
+**Track B: Email Automation System Design (Claude Code)**
+- Scope Claude Code `/decopon-enrichment` workflow: Apollo + Tavily/FireCrawl + cold email generation
+- Define ICP for cold email targeting (event planners? HR managers? both?)
+- Identify email templates + call scripts to reference
+- Map out API integrations (Apollo, enrichment tools, SendGrid)
+- Build will happen Week 2 after video/landing page complete
+
+**Track C: Theresa Bastian (Warm Lead Discovery)**
+- Send discovery request (Mon)
+- Coffee meeting (aim for Fri)
+- Understand property mgmt pain points
+- Soft close for follow-up
 
 **Success Criteria:**
-- [ ] 100+ contacts researched
-- [ ] 90 emails sent
-- [ ] 10-20% reply rate (9-18 replies)
-- [ ] 1-3 discovery calls booked
-- [ ] Resistance moments logged
+- [ ] Hero video v1 created and tested
+- [ ] Landing page structure drafted with email capture form
+- [ ] Email automation system scoped (Claude Code workflow + API strategy)
+- [ ] Warm network emails sent
+- [ ] Theresa outreach sent
+- [ ] Discovery call scheduled/completed
+- [ ] MSOS Vocation score: +1 (hero video complete) + other progress
+- [ ] Week 2 plan finalized
 
-## 90-Day Integrated Roadmap (Jan 6 - April 6, 2025)
+## Automation Agency - 90-Day Launch (Jan 6 - Mar 31, 2026)
+
+**The Offer:** "Freedom Engine" - Done-for-you automation systems that save 15+ hours/week
+**Pricing:** $8,500 per build (14-day delivery)
+**Target Market:** Austin SMBs with repetitive workflows (property mgmt, med spas, home services)
+
+### The Strategy:
+1. **Client Zero (Week 1-2):** Build DecoponATX automation system for Tricia → Document as case study
+2. **Warm Outreach (Week 1):** Theresa Bastian (property manager) - Coffee discovery
+3. **Cold Outreach (Week 3-4):** 15-20 targeted messages to Austin property managers + med spas
+4. **Goal:** 2 clients signed by Day 90 = $17,000 revenue
+
+### Pipeline:
+- **Warm Leads:** 1 (Theresa Bastian - manages my rental property)
+- **Target Industries (Austin):**
+  - Property Management (50+ firms) - #1 priority
+  - Med Spas/Aesthetics (40+ clinics)
+  - Home Services - HVAC/Plumbing (30+ companies)
+
+**Key Files:**
+- Project Dashboard: `/Projects/Active/Automation_Agency/dashboard.md`
+- Week 1 Plan: `/Projects/Active/Automation_Agency/week1-execution-plan.md`
+- Target Research: `/Projects/Active/Automation_Agency/austin-automation-targets-research.md`
+- Theresa Profile: `/Relationships/Business/theresa-bastian.md`
+
+## 90-Day Integrated Roadmap (Jan 6 - Mar 31, 2026)
 
 **Energy Allocation Strategy:**
-- **Month 1-2 (Jan 6 - Mar 6):** DecoponATX PRIORITY - establish cash flow
-- **Month 3 (Mar 7 - Apr 6):** Shift to Musha Shugyo implementation (DEPENDENT on DecoponATX performance)
-- **Throughout:** Digital Economics steady (4 lessons/week for identity formation)
+- **Automation Agency:** 6-8 hours/day (primary cash flow driver)
+- **Musha Shugyo Content:** 1-2 hours/day (document the journey)
+- **Digital Economics:** 5-7 hours/week (skill building)
+- **Health:** Non-negotiable (recovery from nerve damage)
 
 ---
 
-### MONTH 1: Jan 6 - Feb 2 (Weeks 1-4)
+### MONTH 1: Jan 6 - Feb 5 (Weeks 1-4)
 
-#### DecoponATX: Cash Flow Sprint
+#### Automation Agency: Foundation Sprint
 **Time commitment:** 6-8 hours/day
-**Objective:** $4,000-5,000 revenue. Validate offer and pricing.
+**Objective:** Complete Client Zero (DecoponATX), close first paying client ($8,500)
 
-**Week 1 (Jan 6-10):**
-- [ ] 90 emails sent (email challenge)
-- [ ] Create hero video (Day 1-2)
-- [ ] Text warm network for referrals
-- [ ] Set up Google Business Profile, Thumbtack
-- [ ] Start email domain warmup
+**Week 1 (Jan 6-12): Video → Landing Page → Email Strategy**
+- [ ] DecoponATX: Hero video v1 created (Day 1-2)
+- [ ] DecoponATX: Landing page structure drafted with email capture (Day 3-5)
+- [ ] DecoponATX: Warm network outreach sent
+- [ ] Email automation: Claude Code `/decopon-enrichment` workflow scoped
+- [ ] Email automation: ICP + email templates + call scripts defined
+- [ ] Email automation: API integrations mapped (Apollo, enrichment, SendGrid)
+- [ ] Theresa: Outreach sent (Mon)
+- [ ] Theresa: Discovery coffee completed
+- [ ] Week 2 plan finalized (build email automation system + launch outreach)
 
-**Week 2-4 (Jan 13 - Feb 2):**
-- [ ] LinkedIn outreach (10 connections/day)
-- [ ] Attend 2 networking events/week
-- [ ] First paid event by Jan 15
-- [ ] Post in 3 Austin Facebook groups
-- [ ] Continue email outreach (10-15/day)
-- [ ] Target: 3-4 events booked, 2-3 executed
+**Week 2 (Jan 13-19): Email Automation + Landing Page Live**
+- [ ] Build Claude Code `/decopon-enrichment` workflow (APIs integrated)
+- [ ] Landing page live with email capture + booking Calendly
+- [ ] Cold email domain warmup started (SendGrid)
+- [ ] First email campaign drafted (using Apollo + enrichment data)
+- [ ] Test email workflow on 10-20 target contacts
+- [ ] Collect landing page analytics baseline
+
+**Week 3 (Jan 20-26): Email Campaign Sprint**
+- [ ] DecoponATX case study ready (from landing page + early events)
+- [ ] Email automation running at scale (Claude Code + Apollo)
+- [ ] 50-75 cold emails sent (event planners, HR managers)
+- [ ] Email sequences set up for follow-ups
+- [ ] Track opens/clicks/replies via SendGrid
+- [ ] Follow up with Theresa (if needed)
+- [ ] Target: 5-8 discovery calls booked from email
+- [ ] MSOS Vocation score: +landing page live, +email system built
+
+**Week 4 (Jan 27 - Feb 2): Discovery & Proposals**
+- [ ] Complete 3-5 discovery calls
+- [ ] Send 1-2 proposals
+- [ ] Target: 1 client signed ($8,500)
 
 #### Digital Economics: Foundation + Personal Brand
 **Time commitment:** 5-7 hours/week (4 lessons/week)
@@ -92,10 +153,10 @@ You are. That's enough.
 **Schedule:** 2 tweets/day (NO newsletter yet)
 
 **Content Topics - Month 1:**
-- Week 1: "Starting DecoponATX: 90 emails in 5 days"
+- Week 1: "Building the DecoponATX hero video (show, don't tell)"
 - Week 2: "What Musha Shugyo means (and why I'm doing it)"
-- Week 3: "Building PersonalOS: externalizing ADHD executive function"
-- Week 4: "Cold email lessons from the trenches"
+- Week 3: "Claude Code for sales: the `/decopon-enrichment` workflow"
+- Week 4: "Cold email that converts: Apollo + Claude + personalization"
 
 **Focus:** Document the journey in real-time. No pretending. Share wins AND struggles.
 
@@ -216,11 +277,11 @@ If DecoponATX needs more attention → Keep current allocation, defer Musha Shug
 - "The hardest part of injury isn't physical"
 - "How to build discipline when your body says no"
 
-### ADHD/Systems Pillar:
+### Hunter Brain/Systems Pillar:
 - "Building PersonalOS: externalizing executive function"
-- "Why ADHD brains need different productivity systems"
+- "Why hunter brains need different productivity systems"
 - "The resistance voice vs. the execution voice"
-- "Voice memos → tweets: my ADHD-friendly content system"
+- "Voice memos → tweets: my hunter-brain-friendly content system"
 
 ### Entrepreneurship Pillar:
 - "DecoponATX Week 1: 90 emails in 5 days (what happened)"
@@ -238,14 +299,21 @@ If DecoponATX needs more attention → Keep current allocation, defer Musha Shug
 
 ## Key Milestones & Decision Points
 
-**Jan 10:** Email challenge complete - did 90 emails prove viable?
-**Jan 15:** First paid event - does pricing hold at $750?
-**Jan 19:** MRI results - recovery timeline clarity
-**Feb 4 (Day 30):** Channel evaluation - visual vs. automation performance
+**Jan 10:** Hero video + landing page v1 complete - ready for email campaign
+**Jan 19:** Email automation system live (Claude Code `/decopon-enrichment` built) + MRI results
+**Jan 25:** First cold email campaign sent (50-75 emails via Apollo + automation)
+**Feb 4 (Day 30):** Evaluate email performance - open rate, reply rate, discovery calls booked
 **Feb 19 (Day 45):** E-commerce launch - Creator Kit live
 **Mar 6 (Day 60):** First partnership referral - are relationships maturing?
 **Mar 7 (Day 61):** ENERGY SHIFT DECISION - Can we ramp Musha Shugyo or stay DecoponATX-focused?
 **Apr 6 (Day 90):** Business model decision - Lifestyle (Path A) or Growth (Path B)?
+
+**MSOS Vocation Score Milestones:**
+- Hero video complete → +1
+- Landing page live → +1
+- Email automation system built → +1
+- First cold email campaign launched → +1
+- First event booked from email → +2
 
 ---
 
@@ -323,7 +391,7 @@ If DecoponATX needs more attention → Keep current allocation, defer Musha Shug
 ### Why This Matters
 - Financial security for family
 - Proving capability to self
-- Building business around ADHD strengths
+- Building business around hunter brain strengths
 - Creating systems others can use
 
 ## Anti-Goals (What We're NOT Optimizing For)

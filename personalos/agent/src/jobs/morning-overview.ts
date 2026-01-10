@@ -267,7 +267,7 @@ IMPORTANT GUIDELINES:
 - Be direct and tactical, not flowery
 - Under 350 words total
 - Reference specific items from the plan and calendar
-- Acknowledge ADHD patterns without lecturing
+- Acknowledge hunter-brain patterns without lecturing
 - End with an open question that invites dialogue
 - Remember: Action over perfect planning`;
 

@@ -1,0 +1,63 @@
+{
+  "PreToolUse": [
+    {
+      "matcher": "Edit|Write",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "python3 .claude/hooks/scripts/protect-files.py"
+        },
+        {
+          "type": "command",
+          "command": "python3 .claude/hooks/scripts/security-check.py"
+        }
+      ]
+    },
+    {
+      "matcher": "Bash",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "bash .claude/hooks/scripts/log-commands.sh"
+        }
+      ]
+    }
+  ],
+  "PostToolUse": [
+    {
+      "matcher": "Edit|Write",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "python3 .claude/hooks/scripts/format-on-edit.py"
+        }
+      ]
+    }
+  ],
+  "SessionStart": [
+    {
+      "matcher": ".*",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "python3 .claude/hooks/scripts/validate-environment.py"
+        },
+        {
+          "type": "command",
+          "command": "python3 /Users/michaelenriquez/PersonalOS/.claude/hooks/scripts/msos-sync.py --type=session_start --quiet"
+        }
+      ]
+    }
+  ],
+  "Stop": [
+    {
+      "matcher": ".*",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "python3 /Users/michaelenriquez/PersonalOS/.claude/hooks/scripts/msos-sync.py --type=session_end --quiet"
+        }
+      ]
+    }
+  ]
+}

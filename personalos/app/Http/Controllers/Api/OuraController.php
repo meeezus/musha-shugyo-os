@@ -173,6 +173,9 @@ class OuraController extends Controller
             \Log::warning("Could not fetch sleep periods: {$e->getMessage()}");
         }
 
+        // Fetch daily stress data
+        $stress = $this->fetchFromOura('daily_stress', $date);
+
         if (!$readiness && !$sleep && !$activity) {
             return response()->json([
                 'error' => 'No data available',
@@ -206,6 +209,10 @@ class OuraController extends Controller
                 'readiness_data' => $readiness,
                 'sleep_data' => $sleep,
                 'activity_data' => $activity,
+                'stress_high' => $stress['stress_high'] ?? null,
+                'recovery_high' => $stress['recovery_high'] ?? null,
+                'day_summary' => $stress['day_summary'] ?? null,
+                'stress_data' => $stress,
             ]
         );
 
@@ -220,6 +227,33 @@ class OuraController extends Controller
     }
 
     /**
+     * Fetch active rest mode (illness) data from Oura
+     */
+    private function fetchRestMode(): ?array
+    {
+        $token = $this->getToken();
+        if (!$token) {
+            return null;
+        }
+
+        try {
+            $response = Http::withToken($token)
+                ->timeout(10)
+                ->get("{$this->baseUrl}/usercollection/rest_mode_period");
+
+            if ($response->successful()) {
+                $data = $response->json('data');
+                // Find active rest mode (no end_day means still active)
+                return collect($data)->first(fn($period) => $period['end_day'] === null);
+            }
+        } catch (\Exception $e) {
+            \Log::warning("Could not fetch rest mode: {$e->getMessage()}");
+        }
+
+        return null;
+    }
+
+    /**
      * GET /api/oura/insights
      * Get energy insights and recommendations
      */
@@ -231,6 +265,7 @@ class OuraController extends Controller
             'trainingRecommendation' => null,
             'patterns' => [],
             'currentData' => null,
+            'restMode' => null,
         ];
 
         // Get latest data
@@ -311,6 +346,32 @@ class OuraController extends Controller
             if ($recent->every(fn($s) => $s >= 80)) {
                 $insights['patterns'][] = 'Peak performance window - capitalize on high energy';
             }
+        }
+
+        // Check for active rest mode (illness)
+        $restMode = $this->fetchRestMode();
+        if ($restMode) {
+            $tags = [];
+            foreach ($restMode['episodes'] ?? [] as $episode) {
+                foreach ($episode['tags'] ?? [] as $tag) {
+                    // Convert tag_generic_nasal_congestion -> Nasal Congestion
+                    $readable = str_replace(['tag_generic_', 'tag_'], '', $tag);
+                    $readable = ucwords(str_replace('_', ' ', $readable));
+                    $tags[] = $readable;
+                }
+            }
+
+            $insights['restMode'] = [
+                'active' => true,
+                'startDate' => $restMode['start_day'],
+                'symptoms' => array_unique($tags),
+            ];
+
+            // Override recommendations when sick
+            $insights['energyLevel'] = 'recovery';
+            $insights['trainingRecommendation'] = 'REST MODE ACTIVE - Skip training completely, focus on recovery';
+            $insights['recommendedTaskTypes'] = ['rest', 'light_reading', 'sleep'];
+            $insights['patterns'][] = 'Illness detected: ' . implode(', ', array_unique($tags));
         }
 
         return response()->json($insights);

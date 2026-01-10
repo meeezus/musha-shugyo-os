@@ -509,7 +509,7 @@
 
 ### 7:00-8:30am - MUSHA SHUGYO MORNING
 - [ ] Walk + podcast + voice memo
-- [ ] Write 3 tweets (Topic: "Building PersonalOS for ADHD")
+- [ ] Write 3 tweets (Topic: "Building PersonalOS for the hunter brain")
 - [ ] Schedule + engage
 
 ### 9:00am-12:00pm - DECOPONATX: DISCOVERY CALLS
@@ -1153,7 +1153,7 @@
 
 ### 7:00-8:30am - MUSHA SHUGYO MORNING
 - [ ] Walk + podcast + voice memo
-- [ ] Write 3 tweets (Topic: "Building PersonalOS for ADHD executive function")
+- [ ] Write 3 tweets (Topic: "Building PersonalOS for hunter-brain executive function")
 - [ ] Schedule + engage
 
 ### 9:00am-12:00pm - DECOPONATX: E-COMMERCE FINAL SETUP
@@ -2025,7 +2025,7 @@
 - [ ] Resistance patterns - what changed?
 - [ ] Execution muscle - stronger now?
 
-**ADHD & Systems:**
+**Hunter Brain & Systems:**
 - [ ] PersonalOS working well?
 - [ ] Command center useful?
 - [ ] What systems need refinement?
@@ -2050,7 +2050,7 @@
 - [ ] Published ___ newsletters
 - [ ] Coached ___ clients
 - [ ] Completed a 56-lesson business course
-- [ ] Created systems that work WITH your ADHD brain
+- [ ] Created systems that work WITH your hunter brain
 - [ ] Documented your journey publicly
 - [ ] Proved (with data) that you CAN make shit happen
 

@@ -12,7 +12,7 @@
  * !contacts - Show recent contacts
  */
 
-import { Client, GatewayIntentBits, Message, TextChannel } from 'discord.js';
+import { Client, GatewayIntentBits, Message, TextChannel, Partials } from 'discord.js';
 import { logger } from '../utils/logger';
 import { callClaude } from '../utils/claude';
 import axios from 'axios';
@@ -45,6 +45,42 @@ interface Contact {
   last_contact: string | null;
 }
 
+interface ConversationMessage {
+  role: 'user' | 'assistant';
+  content: string;
+  timestamp: number;
+}
+
+// ============================================
+// CONVERSATION MEMORY
+// ============================================
+
+// Store conversation history per channel/DM (key = channel ID)
+const conversationHistory = new Map<string, ConversationMessage[]>();
+const MAX_HISTORY_LENGTH = 20;
+const HISTORY_TTL_MS = 30 * 60 * 1000; // 30 minutes
+
+function getConversationHistory(channelId: string): ConversationMessage[] {
+  const history = conversationHistory.get(channelId) || [];
+  // Filter out stale messages
+  const now = Date.now();
+  return history.filter(msg => now - msg.timestamp < HISTORY_TTL_MS);
+}
+
+function addToConversationHistory(channelId: string, role: 'user' | 'assistant', content: string): void {
+  let history = getConversationHistory(channelId);
+  history.push({ role, content, timestamp: Date.now() });
+  // Keep only the last N messages
+  if (history.length > MAX_HISTORY_LENGTH) {
+    history = history.slice(-MAX_HISTORY_LENGTH);
+  }
+  conversationHistory.set(channelId, history);
+}
+
+function clearConversationHistory(channelId: string): void {
+  conversationHistory.delete(channelId);
+}
+
 // ============================================
 // DISCORD CLIENT
 // ============================================
@@ -59,7 +95,9 @@ export function getDiscordClient(): Client {
       GatewayIntentBits.Guilds,
       GatewayIntentBits.GuildMessages,
       GatewayIntentBits.MessageContent,
+      GatewayIntentBits.DirectMessages,
     ],
+    partials: [Partials.Channel], // Required for DM support
   });
 
   return client;
@@ -229,13 +267,15 @@ async function handleContacts(message: Message): Promise<void> {
 async function handleHelp(message: Message): Promise<void> {
   const response = `## PersonalOS Commands
 
+**!iori <message>** (or **!i**) - Chat with Iori (full context AI)
 **!status** - System overview
 **!capture <text>** - Quick task capture
 **!goals** - Current goal progress
 **!contacts** - Recent contacts
+**!ask <question>** - Quick Claude query
 **!help** - This message
 
-*Tip: Add "urgent" or "important" to captures for high priority*`;
+*Iori has full context of your goals, tasks, and PersonalOS memory.*`;
 
   await message.reply(response);
 }
@@ -263,6 +303,106 @@ async function handleAsk(message: Message, question: string): Promise<void> {
   }
 }
 
+async function handleIori(message: Message, text: string): Promise<void> {
+  if (!text.trim()) {
+    await message.reply('Usage: `!iori <message>` or just DM me!');
+    return;
+  }
+
+  const channelId = message.channel.id;
+
+  // Check for clear command
+  if (text.toLowerCase() === 'clear' || text.toLowerCase() === 'reset') {
+    clearConversationHistory(channelId);
+    await message.reply('🏯 Conversation cleared. Starting fresh!');
+    return;
+  }
+
+  // Add user message to history
+  addToConversationHistory(channelId, 'user', text);
+
+  // Show typing indicator
+  await message.reply('🏯 *Iori is thinking...*');
+
+  try {
+    // Fetch context for Iori
+    const [goals, tasks, contacts] = await Promise.all([
+      fetchGoals(),
+      fetchTasks(),
+      fetchContacts(),
+    ]);
+
+    // Get conversation history for this channel
+    const history = getConversationHistory(channelId).slice(0, -1).map(msg => ({
+      role: msg.role,
+      content: msg.content,
+    }));
+
+    // Call Iori server
+    const response = await axios.post(
+      'http://localhost:3002/chat',
+      {
+        message: text,
+        history: history,
+        context: {
+          goals: goals.map(g => ({
+            title: g.name,
+            current: g.current_value,
+            target: g.target_value,
+            unit: g.unit,
+          })),
+          tasks: tasks.filter(t => t.status !== 'completed').map(t => ({
+            title: t.title,
+            priority: t.priority,
+          })),
+          contacts: contacts.slice(0, 10).map(c => ({
+            name: c.name,
+            last_contact: c.last_contact,
+          })),
+          user_name: 'Michael',
+        },
+      },
+      { timeout: 120000 }
+    );
+
+    const ioriResponse = response.data.response || 'No response from Iori';
+
+    // Add assistant response to history
+    addToConversationHistory(channelId, 'assistant', ioriResponse);
+
+    // Discord has a 2000 char limit, split if needed
+    if (ioriResponse.length > 1900) {
+      const chunks = ioriResponse.match(/.{1,1900}/gs) || [];
+      for (const chunk of chunks) {
+        if (message.channel.isSendable()) {
+          await message.channel.send(chunk);
+        }
+      }
+    } else {
+      if (message.channel.isSendable()) {
+        await message.channel.send(ioriResponse);
+      }
+    }
+
+    // Handle any actions Iori wants to take
+    if (response.data.actions?.length > 0) {
+      for (const action of response.data.actions) {
+        if (action.type === 'add_task' && action.data?.title) {
+          await createTask(action.data.title, action.data.priority || 'medium');
+          if (message.channel.isSendable()) {
+            await message.channel.send(`✅ Task added: "${action.data.title}"`);
+          }
+        }
+      }
+    }
+  } catch (err: any) {
+    logger.error('Iori error:', err.message);
+    if (message.channel.isSendable()) {
+      await message.channel.send('Failed to reach Iori. Is the agent running?');
+    }
+  }
+}
+
 // ============================================
 // MESSAGE HANDLER
 // ============================================
@@ -271,7 +411,14 @@ async function handleMessage(message: Message): Promise<void> {
   // Ignore bot messages
   if (message.author.bot) return;
 
-  // Check for command prefix
+  // Handle DMs - route directly to Iori for natural conversation
+  if (message.channel.isDMBased()) {
+    logger.info(`Discord DM from ${message.author.tag}: "${message.content.substring(0, 50)}..."`);
+    await handleIori(message, message.content);
+    return;
+  }
+
+  // Check for command prefix in servers
   if (!message.content.startsWith('!')) return;
 
   const args = message.content.slice(1).trim().split(/\s+/);
@@ -297,6 +444,10 @@ async function handleMessage(message: Message): Promise<void> {
         break;
       case 'ask':
         await handleAsk(message, text);
+        break;
+      case 'iori':
+      case 'i':
+        await handleIori(message, text);
         break;
       case 'help':
         await handleHelp(message);

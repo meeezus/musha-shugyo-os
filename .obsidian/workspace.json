@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "0eb426f78310f7e7",
+        "id": "017d19e31c719830",
         "type": "tabs",
         "children": [
           {
-            "id": "07757f96fab24f80",
+            "id": "4c2076a4dd116bd1",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Tasks/Active/Unified_Week1_Plan.md",
+                "file": "Memory/episode_logs/2026-01-04_1643_fc3f2747.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Unified_Week1_Plan"
+              "title": "2026-01-04_1643_fc3f2747"
             }
           }
         ]
@@ -74,7 +74,8 @@
               "title": "Bookmarks"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -94,7 +95,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Tasks/Active/Unified_Week1_Plan.md",
+                "file": "Projects/Active/Automation_Agency/README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +105,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Unified_Week1_Plan"
+              "title": "Backlinks for README"
             }
           },
           {
@@ -113,12 +114,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Tasks/Active/Unified_Week1_Plan.md",
+                "file": "Projects/Active/Automation_Agency/README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Unified_Week1_Plan"
+              "title": "Outgoing links from README"
             }
           },
           {
@@ -156,13 +157,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Tasks/Active/Unified_Week1_Plan.md",
+                "file": "Projects/Active/Automation_Agency/README.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Unified_Week1_Plan"
+              "title": "Outline of README"
             }
           }
         ]
@@ -183,53 +184,53 @@
       "bases:Create new base": false
     }
   },
-  "active": "07757f96fab24f80",
+  "active": "5aa6ebd6f3e31dfa",
   "lastOpenFiles": [
-    "personalos/public/build/assets/createLucideIcon-Bt1YNzU9.js",
-    "personalos/public/build/assets/AppLayout-BoXm67Py.js",
-    "personalos/public/build/assets/Placeholder-BHGu6Pxx.js",
-    "personalos/public/build/assets/circle-check-big-BDcscbCB.js",
-    "personalos/public/build/assets/Chat-Bumc4uWc.js",
-    "personalos/public/build/assets/Dashboard-DuQnv8_b.js",
-    "personalos/public/build/assets/loader-circle-DpL7L1Yp.js",
-    "personalos/public/build/assets/Login-BL6zB29g.js",
-    "personalos/public/build/assets/app-rw9DWTFk.js",
-    "personalos/agent/src/iori/server.ts",
-    "personalos/agent/src/iori/index.ts",
-    "personalos/agent/node_modules/@types/serve-static/README.md",
-    "personalos/agent/node_modules/@types/express-serve-static-core/README.md",
-    "personalos/agent/node_modules/@types/connect/README.md",
-    "personalos/agent/node_modules/@types/qs/README.md",
-    "personalos/agent/node_modules/@types/range-parser/README.md",
-    "personalos/agent/node_modules/@types/body-parser/README.md",
-    "personalos/agent/node_modules/@types/http-errors/README.md",
-    "personalos/agent/node_modules/@types/send/README.md",
-    "personalos/agent/node_modules/body-parser/README.md",
-    "personalos/agent/node_modules/cookie-signature/History.md",
-    "personalos/agent/node_modules/cors/HISTORY.md",
-    "personalos/agent/node_modules/cors/README.md",
-    "personalos/agent/node_modules/vary/HISTORY.md",
-    "personalos/agent/node_modules/cookie-signature/Readme.md",
-    "personalos/agent/node_modules/cors/CONTRIBUTING.md",
-    "personalos/agent/node_modules/object-assign/readme.md",
-    "personalos/agent/node_modules/vary/README.md",
-    "personalos/agent/node_modules/type-is/node_modules/mime-types/README.md",
-    "personalos/agent/node_modules/type-is/node_modules/mime-types/HISTORY.md",
-    "personalos/agent/node_modules/type-is/node_modules/mime-db/README.md",
-    "personalos/agent/node_modules/type-is/node_modules/mime-db/HISTORY.md",
-    "personalos/agent/node_modules/type-is/README.md",
-    "personalos/agent/node_modules/type-is/HISTORY.md",
-    "personalos/agent/node_modules/accepts/node_modules/mime-types/README.md",
-    "personalos/agent/node_modules/accepts/node_modules/mime-types/HISTORY.md",
-    "docs/references/abundance/app/node_modules/date-fns/docs/logotype.svg",
-    "docs/references/abundance/app/node_modules/date-fns/docs/logo.svg",
-    "docs/references/abundance/app/src/assets/react.svg",
-    "docs/references/abundance/app/dist/vite.svg",
-    "docs/references/abundance/app/dist/favicon.svg",
-    "docs/references/abundance/app/public/vite.svg",
-    "docs/references/abundance/app/public/favicon.svg",
-    "_deprecated/jfdi_screenshots/Untitled 34.png",
-    "_deprecated/jfdi_screenshots/Untitled 33.png",
-    "_deprecated/jfdi_screenshots/Untitled 32.png"
+    "Memory/episode_logs/2026-01-10_0054_668d30b1.md",
+    "Memory/episode_logs/2026-01-10_0027_5a02cba7.md",
+    "Memory/episode_logs/2026-01-10_0018_a436a34d.md",
+    "Memory/episode_logs/2026-01-10_0017_a436a34d.md",
+    "personalos/public/hot",
+    "personalos/storage/framework/views/eee9b1eebf736481f73c5ea2bc192841.php",
+    "personalos/storage/framework/views/c1efae76cd05b400ddbd6e034fcad75a.php",
+    "personalos/public/build/assets/AppLayout-DQENNqW4.js",
+    "personalos/public/build/assets/copy-DHLLcRGU.js",
+    "personalos/public/build/assets/check-DMaXu9CG.js",
+    "personalos/public/build/assets/plus-Dstfg65z.js",
+    "personalos/public/build/assets/createLucideIcon-CGtc1gvZ.js",
+    "personalos/public/build/assets/flame-CSx5mjd0.js",
+    "personalos/public/build/assets/clock-BfK0KxF2.js",
+    "Projects/Active/Clawdbot_OAuth_Fix_PRD.md",
+    "kuato/shared/claude-skill.md",
+    "Memory/episode_logs/2026-01-09_2310_10819cd2.md",
+    "Scripts/iori-vm/README.md",
+    "Knowledge/Tech_Tools/01_Important Course Updates & Information.md",
+    "2026-01-09.md",
+    "clawdis/Peekaboo/Tachikoma/docs/ai-sdk.md",
+    "Memory/episode_logs/2026-01-09_1134_435911c8.md",
+    "Memory/episode_logs/2026-01-09_1106_2c972557.md",
+    "Memory/episode_logs/2026-01-09_0918_69e174bd.md",
+    "Projects/Active/Claude_Prompts.md",
+    "Projects/Active/AGENTS.md",
+    "Projects/Active/Automation_Agency/austin-automation-targets-research.md",
+    "Projects/Active/Automation_Agency/week1-execution-plan-automation-agency.md",
+    "Projects/Active/Automation_Agency/week1-execution-plan.md",
+    "Projects/Active/Automation_Agency/README.md",
+    "Projects/Active/Automation_Agency/dashboard.md",
+    "Projects/Active/Automation_Agency/automation-agency-dashboard.md",
+    "Memory/episode_logs/2026-01-08_2138_dba834ec.md",
+    "Templates/morning_digest_template.md",
+    "Notebooks/Ralph_Beads_Integration_Guide.md",
+    "Projects/Active/Iori_Kuato_Integration.md",
+    "clawdis/node_modules/cli-highlight/node_modules/highlight.js/scss/school-book.png",
+    "clawdis/node_modules/cli-highlight/node_modules/highlight.js/scss/pojoaque.jpg",
+    "clawdis/node_modules/cli-highlight/node_modules/highlight.js/scss/brown-papersq.png",
+    "clawdis/node_modules/cli-highlight/node_modules/highlight.js/styles/school-book.png",
+    "clawdis/node_modules/cli-highlight/node_modules/highlight.js/styles/pojoaque.jpg",
+    "clawdis/node_modules/cli-highlight/node_modules/highlight.js/styles/brown-papersq.png",
+    "clawdis/node_modules/proper-lockfile/node_modules/retry/equation.gif",
+    "clawdis/node_modules/lit/logo.svg",
+    "clawdis/node_modules/jszip/graph.svg",
+    "clawdis/node_modules/qrcode-terminal/example/basic.png"
   ]
 }

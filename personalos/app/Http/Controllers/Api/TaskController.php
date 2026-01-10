@@ -11,7 +11,7 @@ class TaskController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $query = $request->user()->tasks()->orderBy('due_date', 'asc');
+        $query = $request->user()->tasks()->with('project')->orderBy('due_date', 'asc');
 
         // Filter by due_date if provided
         if ($request->has('due_date')) {

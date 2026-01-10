@@ -31,9 +31,13 @@ class OuraData extends Model
         'total_calories',
         'steps',
         'target_calories',
+        'stress_high',
+        'recovery_high',
+        'day_summary',
         'readiness_data',
         'sleep_data',
         'activity_data',
+        'stress_data',
     ];
 
     protected $casts = [
@@ -57,6 +61,9 @@ class OuraData extends Model
         'readiness_data' => 'array',
         'sleep_data' => 'array',
         'activity_data' => 'array',
+        'stress_data' => 'array',
+        'stress_high' => 'integer',
+        'recovery_high' => 'integer',
     ];
 
     /**

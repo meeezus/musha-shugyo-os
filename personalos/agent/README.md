@@ -151,7 +151,7 @@ agent/
 
 The morning overview reads from PersonalOS markdown files:
 
-1. `~/PersonalOS/CLAUDE.md` - Role, ADHD patterns, session flow
+1. `~/PersonalOS/CLAUDE.md` - Role, hunter-brain patterns, session flow
 2. `~/PersonalOS/Memory/identity.md` - Philosophy on who you are
 3. `~/PersonalOS/Memory/goals.md` - What we're working toward
 4. `~/PersonalOS/Memory/observations.md` - Patterns and learnings

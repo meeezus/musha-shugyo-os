@@ -13,6 +13,9 @@
     "test:discord": "ts-node src/discord/bot.ts",
     "test:oura": "ts-node src/mcp/oura.ts",
     "sync:oura": "ts-node src/jobs/oura-sync.ts",
+    "msos:status": "ts-node src/jobs/msos-monitor.ts --status",
+    "msos:monitor": "ts-node src/jobs/msos-monitor.ts --daemon",
+    "msos:restart": "ts-node src/jobs/msos-monitor.ts --restart",
     "oauth": "ts-node scripts/generate-oauth-token.ts",
     "build": "tsc",
     "start": "node dist/index.js"
@@ -28,19 +31,26 @@
   "type": "commonjs",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.71.2",
+    "@mariozechner/pi-ai": "^0.34.2",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
+    "@types/multer": "^2.0.0",
     "@types/node": "^25.0.3",
+    "@types/ws": "^8.18.1",
     "axios": "^1.13.2",
     "bree": "^9.2.6",
+    "chokidar": "^5.0.0",
     "cors": "^2.8.5",
     "dayjs": "^1.11.19",
     "discord.js": "^14.25.1",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "googleapis": "^169.0.0",
+    "multer": "^2.0.2",
+    "node-pty": "^1.1.0",
     "open": "^11.0.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "ws": "^8.18.3"
   }
 }

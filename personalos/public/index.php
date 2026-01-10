@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
-
-// Suppress PHP 8.5 deprecation warnings for PDO MySQL constants
+// Suppress PHP 8.5 deprecation warnings
 error_reporting(E_ALL & ~E_DEPRECATED);
+
+use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 

@@ -1,33 +1,48 @@
-# Sovereign Man Metrics Dashboard
+# MSOS (Musha Shugyo OS) - Metrics Dashboard
 **Started:** January 2025
 **Updated:** [Update weekly on Sundays]
+**Primary Tracking:** Personal Brand Growth + DecoponATX + Automation Agency
 
 ---
 
 ## Phase 1 Goals (Weeks 1-4)
+
+**Personal Brand (Content + Audience)**
 - [ ] 600 X followers (from ~500)
 - [ ] 50 newsletter subscribers
-- [ ] $500+ health coaching revenue
-- [ ] 1-2 health coaching clients
-- [ ] 90 DecoponATX emails sent
-- [ ] 56 tweets published (14/week)
+- [ ] 56 tweets published (14/week, 2/day)
 - [ ] 4 newsletters published
+- [ ] Digital Economics Lessons 1-16 completed
+
+**DecoponATX (Business)**
+- [ ] Hero video created + landing page live
+- [ ] Email automation system designed
+- [ ] First event booked ($750+)
+- [ ] Landing page email captures: 20+
+
+**Automation Agency (Business)**
+- [ ] Theresa Bastian outreach completed
+- [ ] First discovery call completed
+- [ ] Scope of work drafted
 
 ---
 
 ## Weekly Tracking
 
 ### Week 1 (Jan 6-12)
-**Focus Pillar:** Sovereignty/Entrepreneurship (email challenge week)
+**Focus Pillars:** Sovereignty/Entrepreneurship + Build Personal Brand Foundation
 
 | Metric | Target | Actual | Notes |
 |--------|--------|--------|-------|
-| Tweets Posted | 14 | | |
-| Newsletter Published | 1 | | Topic: "Why I Left" |
+| Tweets Posted | 14 | | 2/day, planning system |
+| Newsletter Published | 1 | | Topic: "Building the Hero Video" |
 | X Followers | +25 | | Start: ~500 |
 | Newsletter Subs | 10 | | |
-| DecoponATX Emails | 90 | | |
-| Health Clients | 1 | | |
+| **DecoponATX - Hero Video** | ✓ Created | | (Tricia records) |
+| **DecoponATX - Landing Page** | Drafted | | Ready for video drop |
+| **DecoponATX - Warm Outreach** | ✓ Sent | | Network emails |
+| **Automation Agency - Theresa** | ✓ Outreach | | Discovery call booked? |
+| Digital Economics Lessons | 4 | | Lessons 1-4 |
 | Resistance Logged | 5+ | | |
 
 **Best Tweet:** [link]
@@ -37,15 +52,18 @@
 ---
 
 ### Week 2 (Jan 13-19)
-**Focus Pillar:** Health
+**Focus Pillars:** Entrepreneurship + AI Systems | **Build Email Automation**
 
 | Metric | Target | Actual | Notes |
 |--------|--------|--------|-------|
-| Tweets Posted | 14 | | |
-| Newsletter Published | 1 | | Topic: "Decentralized Health" |
+| Tweets Posted | 14 | | Entrepreneurship focus |
+| Newsletter Published | 1 | | Topic: "What Musha Shugyo Means" |
 | X Followers | +25 | | |
 | Newsletter Subs | +15 | | |
-| Health Clients | 1-2 | | |
+| **DecoponATX - Landing Page** | ✓ Live | | With video + email capture |
+| **DecoponATX - Email System** | ✓ Built | | Claude Code `/decopon-enrichment` |
+| **Email Campaign** | Sent | | First 50 emails |
+| Digital Economics Lessons | 8 | | Lessons 5-8 |
 | Resistance Logged | 5+ | | |
 
 **Best Tweet:** [link]
@@ -55,15 +73,18 @@
 ---
 
 ### Week 3 (Jan 20-26)
-**Focus Pillar:** Martial Arts Philosophy
+**Focus Pillars:** Physical Mastery + Entrepreneurship | **Scale Email Campaign**
 
 | Metric | Target | Actual | Notes |
 |--------|--------|--------|-------|
-| Tweets Posted | 14 | | |
+| Tweets Posted | 14 | | BJJ journey focus |
 | Newsletter Published | 1 | | Topic: "White Belt Advantage" |
 | X Followers | +25 | | |
 | Newsletter Subs | +15 | | |
-| Health Revenue | | | |
+| **Email Campaign** | Scale | | 50-75 emails sent |
+| **Discovery Calls** | 5-8 | | From email |
+| **DecoponATX Events** | 1-2 | | Booked from landing page |
+| Digital Economics Lessons | 12 | | Lessons 9-12 |
 | Resistance Logged | 5+ | | |
 
 **Best Tweet:** [link]
@@ -73,16 +94,18 @@
 ---
 
 ### Week 4 (Jan 27-Feb 2)
-**Focus Pillar:** AI/Systems
+**Focus Pillars:** Integration + Systematization | **Month Review**
 
 | Metric | Target | Actual | Notes |
 |--------|--------|--------|-------|
-| Tweets Posted | 14 | | |
-| Newsletter Published | 1 | | Topic: "Building Second Brain with AI" |
-| X Followers | +25 | | |
-| Newsletter Subs | +10 | | |
-| Health Revenue | | | |
-| Resistance Logged | 5+ | | |
+| Tweets Posted | 14 | | Systems/integration |
+| Newsletter Published | 1 | | Topic: "Landing Page + Email Automation" |
+| X Followers | +25 | | Target: 600 total |
+| Newsletter Subs | +10 | | Target: 50 total |
+| **Discovery Calls** | 3-5 closed | | Proposals sent |
+| **First Event Booked** | ✓ Yes | | Revenue: $750+ |
+| Digital Economics Lessons | 16 | | Lessons 13-16 (Module 1 complete) |
+| Resistance Logged | 5+ | | Month 1 reflection |
 
 **Best Tweet:** [link]
 **Best Structure:**
@@ -101,12 +124,12 @@
 | Newsletter Subs | 0 | | |
 | Profile Visits | | | |
 
-**Revenue**
-| Source | Amount |
-|--------|--------|
-| Health Coaching | |
-| DecoponATX | |
-| **Total** | |
+**Revenue (Businesses)**
+| Source | Target | Actual | Notes |
+|--------|--------|--------|-------|
+| DecoponATX | $2,500 | | 3-4 events |
+| Automation Agency | $0 | | (Month 2+) |
+| **Total** | $2,500+ | | |
 
 **Content Performance**
 | Metric | Value |
@@ -180,25 +203,33 @@ Track which tweet structures work best:
 
 ## Revenue Tracking
 
-### Health Coaching
+### DecoponATX (Workshop Events)
 
-| Client | Start Date | Package | Price | Status | Notes |
-|--------|-----------|---------|-------|--------|-------|
+| Client/Event | Date | Status | Revenue | Attendees | Notes |
+|-------------|------|--------|---------|-----------|-------|
 | | | | | | |
 | | | | | | |
-
-**Total Health Revenue (Jan):** $
-**Total Health Revenue (Q1):** $
-
-### DecoponATX
-
-| Client/Lead | Date | Status | Revenue | Notes |
-|-------------|------|--------|---------|-------|
-| | | | | |
-| | | | | |
 
 **Total DecoponATX Revenue (Jan):** $
 **Total DecoponATX Revenue (Q1):** $
+
+### Automation Agency (B2B Automation)
+
+| Client | Discovery Date | Status | Proposal Value | Notes |
+|--------|---|--------|---|-------|
+| Theresa Bastian | | Discovery | | Property mgmt automation |
+| | | | | |
+
+**Total Automation Agency Revenue (Jan):** $
+**Total Automation Agency Revenue (Q1):** $
+
+### Combined Revenue Summary
+
+| Month | DecoponATX | Automation | **Total** |
+|-------|-----------|-----------|---------|
+| January | | | |
+| February | | | |
+| March | | | |
 
 ---
 
