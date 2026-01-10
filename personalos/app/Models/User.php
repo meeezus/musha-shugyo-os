@@ -55,6 +55,11 @@ class User extends Authenticatable
         return $this->hasMany(Goal::class);
     }
 
+    public function strategicGoals(): HasMany
+    {
+        return $this->hasMany(StrategicGoal::class);
+    }
+
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class);

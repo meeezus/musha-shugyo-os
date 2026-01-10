@@ -1,10 +1,16 @@
 import React from 'react';
 import { Head } from '@inertiajs/react';
 import AppLayout from '@/Layouts/AppLayout';
-import GoalWidget from '@/Components/GoalWidget';
-import OuraWidget from '@/Components/OuraWidget';
-import { Clock, RefreshCw, Calendar, Mail, CheckCircle2, Circle, Zap } from 'lucide-react';
-import { Goal, Task, Contact, User } from '@/types';
+// GoalWidget removed - replaced by Project Progress widget
+import StatusBriefCard from '@/Components/StatusBriefCard';
+import RecommendationsWidget from '@/Components/RecommendationsWidget';
+import GoalAlignmentWidget from '@/Components/GoalAlignmentWidget';
+import TimeAllocationWidget from '@/Components/TimeAllocationWidget';
+import QuadrantSummaryWidget from '@/Components/QuadrantSummaryWidget';
+import ContentRalphWidget from '@/Components/ContentRalphWidget';
+import RecoveryRoutineWidget from '@/Components/RecoveryRoutineWidget';
+import { Clock, RefreshCw, Sparkles, Zap, Activity, Moon, Heart, Footprints, Brain } from 'lucide-react';
+import { Goal, Task, Contact, User, CommandBrief } from '@/types';
 
 interface OuraData {
     date: string;
@@ -15,6 +21,9 @@ interface OuraData {
     steps: number | null;
     resting_heart_rate: number | null;
     hrv_average: number | null;
+    stress_high: number | null;
+    recovery_high: number | null;
+    day_summary: string | null;
 }
 
 interface OuraInsights {
@@ -43,15 +52,200 @@ interface DashboardProps {
     ouraInsights?: OuraInsights | null;
 }
 
+// Biometrics status bar for header - shows Oura ring data
+function BiometricsBar({
+    data,
+    insights,
+    onSync,
+    isLoading
+}: {
+    data: OuraData | null;
+    insights: OuraInsights | null;
+    onSync: () => void;
+    isLoading: boolean;
+}) {
+    const readiness = data?.readiness_score ?? insights?.currentData?.readiness ?? null;
+    const sleep = data?.sleep_score ?? insights?.currentData?.sleep ?? null;
+    const activity = data?.activity_score ?? insights?.currentData?.activity ?? null;
+    const hrv = data?.hrv_average ?? null;
+    const rhr = data?.resting_heart_rate ?? null;
+    const steps = data?.steps ?? insights?.currentData?.steps ?? null;
+    const daySummary = data?.day_summary ?? null;
+
+    const getScoreColor = (score: number | null) => {
+        if (!score) return 'text-white/30';
+        if (score >= 80) return 'text-emerald-500/60';
+        if (score >= 60) return 'text-amber-500/50';
+        return 'text-white/45';
+    };
+
+    const getScoreBg = (score: number | null) => {
+        if (!score) return 'bg-white/5 border-white/10';
+        if (score >= 80) return 'bg-white/10 border-white/20';
+        if (score >= 60) return 'bg-white/5 border-white/15';
+        return 'bg-white/5 border-white/10';
+    };
+
+    const getEnergyConfig = () => {
+        if (!insights?.energyLevel || insights.energyLevel === 'unknown') return null;
+        const config = {
+            high: { color: 'bg-emerald-500/50', label: 'PEAK', textColor: 'text-emerald-500/70' },
+            medium: { color: 'bg-amber-500/40', label: 'STEADY', textColor: 'text-amber-500/60' },
+            low: { color: 'bg-red-500/30', label: 'CONSERVE', textColor: 'text-red-500/50' },
+        };
+        return config[insights.energyLevel as keyof typeof config];
+    };
+
+    const getStressConfig = () => {
+        if (!daySummary) return null;
+        const configs: Record<string, { textColor: string; label: string }> = {
+            restored: { textColor: 'text-white/60', label: 'RESTORED' },
+            normal: { textColor: 'text-white/50', label: 'NORMAL' },
+            stressful: { textColor: 'text-white/40', label: 'STRESSED' },
+            stressed: { textColor: 'text-white/40', label: 'STRESSED' },
+        };
+        return configs[daySummary.toLowerCase()] || { textColor: 'text-white/40', label: daySummary.toUpperCase() };
+    };
+
+    const stressConfig = getStressConfig();
+    const energy = getEnergyConfig();
+    const hasData = readiness || sleep || activity;
+
+    if (!hasData) {
+        return (
+            <div className="flex items-center gap-2 px-3 py-2 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-[2px]">
+                <span className="text-[10px] font-mono text-black/30 dark:text-white/30">NO BIOMETRICS</span>
+                <button
+                    onClick={onSync}
+                    disabled={isLoading}
+                    className="p-1 text-white/30 hover:text-white/60 transition-colors"
+                    title="Sync Oura"
+                >
+                    <RefreshCw size={12} className={isLoading ? 'animate-spin' : ''} />
+                </button>
+            </div>
+        );
+    }
+
+    return (
+        <div className="flex items-center gap-2 px-3 py-2 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-[2px]">
+            {energy && (
+                <div className={`flex items-center gap-1.5 px-2 py-1 ${getScoreBg(readiness)} border rounded-[2px]`}>
+                    <span className={`w-2 h-2 rounded-full ${energy.color} ${insights?.energyLevel === 'high' ? 'animate-pulse' : ''}`}></span>
+                    <span className={`text-[10px] font-mono font-bold ${energy.textColor}`}>{energy.label}</span>
+                </div>
+            )}
+
+            <div className="w-[1px] h-5 bg-black/10 dark:bg-white/10"></div>
+
+            <div className="flex items-center gap-4">
+                <div className="flex items-center gap-1.5">
+                    <Zap size={12} className={getScoreColor(readiness)} />
+                    <div className="flex flex-col">
+                        <span className={`text-xs font-mono font-bold leading-none ${getScoreColor(readiness)}`}>
+                            {readiness ?? '--'}
+                        </span>
+                        <span className="text-[8px] font-mono text-black/40 dark:text-white/40 uppercase">Ready</span>
+                    </div>
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                    <Moon size={12} className={getScoreColor(sleep)} />
+                    <div className="flex flex-col">
+                        <span className={`text-xs font-mono font-bold leading-none ${getScoreColor(sleep)}`}>
+                            {sleep ?? '--'}
+                        </span>
+                        <span className="text-[8px] font-mono text-black/40 dark:text-white/40 uppercase">Sleep</span>
+                    </div>
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                    <Activity size={12} className={getScoreColor(activity)} />
+                    <div className="flex flex-col">
+                        <span className={`text-xs font-mono font-bold leading-none ${getScoreColor(activity)}`}>
+                            {activity ?? '--'}
+                        </span>
+                        <span className="text-[8px] font-mono text-black/40 dark:text-white/40 uppercase">Active</span>
+                    </div>
+                </div>
+            </div>
+
+            <div className="w-[1px] h-5 bg-black/10 dark:bg-white/10"></div>
+
+            <div className="hidden lg:flex items-center gap-3 text-[10px] font-mono text-black/50 dark:text-white/50">
+                {stressConfig && (
+                    <div className={`flex items-center gap-1 ${stressConfig.textColor}`}>
+                        <Brain size={10} />
+                        <span>{stressConfig.label}</span>
+                    </div>
+                )}
+                {hrv && (
+                    <div className="flex items-center gap-1">
+                        <Heart size={10} />
+                        <span>HRV {hrv}</span>
+                    </div>
+                )}
+                {rhr && (
+                    <div className="flex items-center gap-1">
+                        <Heart size={10} className="text-white/30" />
+                        <span>RHR {rhr}</span>
+                    </div>
+                )}
+                {steps && (
+                    <div className="flex items-center gap-1">
+                        <Footprints size={10} />
+                        <span>{steps.toLocaleString()}</span>
+                    </div>
+                )}
+            </div>
+
+            <button
+                onClick={onSync}
+                disabled={isLoading}
+                className="p-1.5 text-white/30 hover:text-white/60 hover:bg-white/5 rounded-[2px] transition-colors ml-1"
+                title="Sync Oura"
+            >
+                <RefreshCw size={12} className={isLoading ? 'animate-spin' : ''} />
+            </button>
+        </div>
+    );
+}
+
 export default function Dashboard({ auth, goals, tasks, contacts, ouraData, ouraInsights }: DashboardProps) {
-    const [isRefreshing, setIsRefreshing] = React.useState(false);
     const [localOuraData, setLocalOuraData] = React.useState<OuraData | null>(ouraData || null);
     const [localOuraInsights, setLocalOuraInsights] = React.useState<OuraInsights | null>(ouraInsights || null);
     const [isOuraLoading, setIsOuraLoading] = React.useState(false);
 
-    const handleRefresh = async () => {
-        setIsRefreshing(true);
-        setTimeout(() => setIsRefreshing(false), 1000);
+    // Command Brief state
+    const [commandBrief, setCommandBrief] = React.useState<CommandBrief | null>(null);
+    const [isBriefLoading, setIsBriefLoading] = React.useState(true);
+    const [isAiRefreshing, setIsAiRefreshing] = React.useState(false);
+
+    // Fetch command brief on mount
+    React.useEffect(() => {
+        fetchCommandBrief();
+    }, []);
+
+    const fetchCommandBrief = async (aiRefresh = false) => {
+        if (aiRefresh) {
+            setIsAiRefreshing(true);
+        } else {
+            setIsBriefLoading(true);
+        }
+
+        try {
+            const params = new URLSearchParams();
+            if (aiRefresh) params.append('ai', 'true');
+            params.append('refresh', 'true');
+
+            const response = await window.axios.get(`/api/command/brief?${params.toString()}`);
+            setCommandBrief(response.data);
+        } catch (error) {
+            console.error('Failed to fetch command brief:', error);
+        } finally {
+            setIsBriefLoading(false);
+            setIsAiRefreshing(false);
+        }
     };
 
     const handleOuraSync = async () => {
@@ -59,17 +253,15 @@ export default function Dashboard({ auth, goals, tasks, contacts, ouraData, oura
         const minLoadTime = new Promise(resolve => setTimeout(resolve, 1000));
 
         try {
-            // Sync data from Oura using window.axios (which has CSRF configured)
             await window.axios.post('/api/oura/sync');
-
-            // Fetch the latest data
             const [dataRes, insightsRes] = await Promise.all([
                 window.axios.get('/api/oura/latest'),
                 window.axios.get('/api/oura/insights'),
             ]);
-
             setLocalOuraData(dataRes.data);
             setLocalOuraInsights(insightsRes.data);
+            // Also refresh brief with new Oura data
+            fetchCommandBrief();
         } catch (error: any) {
             console.error('Failed to sync Oura data:', error?.response?.data || error);
         }
@@ -78,9 +270,18 @@ export default function Dashboard({ auth, goals, tasks, contacts, ouraData, oura
         setIsOuraLoading(false);
     };
 
-    const isCompleted = (task: Task) => task.completed_at !== null;
-    const highPriorityTasks = tasks?.filter(t => !isCompleted(t) && t.priority === 'high') || [];
-    const todayTasks = highPriorityTasks.slice(0, 3);
+    const handleTaskComplete = async (taskId: number) => {
+        try {
+            await window.axios.put(`/api/tasks/${taskId}`, {
+                completed_at: new Date().toISOString()
+            });
+            // Refresh the brief to update recommendations
+            fetchCommandBrief();
+        } catch (error) {
+            console.error('Failed to complete task:', error);
+            throw error; // Re-throw so the widget knows it failed
+        }
+    };
 
     const formatDate = () => {
         return new Date().toLocaleDateString('en-US', {
@@ -90,253 +291,105 @@ export default function Dashboard({ auth, goals, tasks, contacts, ouraData, oura
         }).toUpperCase();
     };
 
-    const formatTime = () => {
-        return new Date().toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
-    };
-
     return (
         <AppLayout user={auth.user}>
             <Head title="Command Center" />
 
-            <div className="flex-1 overflow-y-auto p-8 max-w-[1600px] mx-auto">
-                {/* Header / Brief Status */}
-                <div className="flex justify-between items-end mb-8 border-b border-white/10 pb-4">
+            <div className="flex-1 overflow-y-auto p-4 md:p-8 max-w-[1600px] mx-auto">
+                {/* Header */}
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6 md:mb-8 border-b border-black/10 dark:border-white/10 pb-4">
                     <div>
-                        <h2 className="text-3xl font-display font-bold text-white mb-2">
+                        <h2 className="text-xl md:text-3xl font-display font-bold text-white/90 mb-1">
                             COMMAND CENTER
                         </h2>
-                        <div className="flex items-center gap-4 text-xs font-mono text-white/50">
-                            <div className="flex items-center gap-2 px-2 py-1 bg-emerald-500/10 border border-emerald-500/20 rounded-[2px] text-emerald-400">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                                SOVEREIGN MODE
+                        <div className="flex flex-wrap items-center gap-2 md:gap-4 text-xs font-mono text-white/40">
+                            <div className="flex items-center gap-2 px-2 py-1 bg-white/5 border border-white/10 rounded-[2px] text-white/50">
+                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500/50 animate-pulse"></span>
+                                SOVEREIGN
                             </div>
                             <div className="flex items-center gap-1">
                                 <Clock size={12} />
-                                <span>{formatDate()} // {formatTime()}</span>
+                                <span>{formatDate()}</span>
                             </div>
+                            {/* Refresh buttons */}
+                            <button
+                                onClick={() => fetchCommandBrief(false)}
+                                disabled={isBriefLoading}
+                                className="flex items-center gap-1 px-2 py-1 text-white/30 hover:text-white/60 hover:bg-white/5 rounded-[2px] transition-colors"
+                                title="Refresh brief (static)"
+                            >
+                                <RefreshCw size={12} className={isBriefLoading ? 'animate-spin' : ''} />
+                                <span>Refresh</span>
+                            </button>
+                            <button
+                                onClick={() => fetchCommandBrief(true)}
+                                disabled={isAiRefreshing}
+                                className="flex items-center gap-1 px-2 py-1 text-white/30 hover:text-white/50 hover:bg-white/5 rounded-[2px] transition-colors"
+                                title="AI-enhanced refresh (uses API credits)"
+                            >
+                                <Sparkles size={12} className={isAiRefreshing ? 'animate-pulse' : ''} />
+                                <span>AI Brief</span>
+                            </button>
                         </div>
                     </div>
-                    <button
-                        onClick={handleRefresh}
-                        className="flex items-center gap-2 px-3 py-2 bg-white/5 border border-white/10 rounded-[2px] text-xs font-mono text-white/60 hover:text-white hover:bg-white/10 transition-colors"
-                    >
-                        <RefreshCw size={12} className={isRefreshing ? 'animate-spin' : ''} />
-                        {isRefreshing ? 'SYNCING...' : 'REFRESH STATUS'}
-                    </button>
-                </div>
-
-                {/* Overview Card */}
-                <div className="stealth-card p-6 mb-8 relative group">
-                    <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
-                    <div className="flex items-start gap-4">
-                        <div className="mt-1 p-3 bg-emerald-500/5 border border-emerald-500/20 rounded-[2px] text-emerald-500">
-                            <Zap size={20} />
-                        </div>
-                        <div>
-                            <h2 className="text-lg font-bold font-display text-white mb-2 tracking-wide">
-                                DUAL MISSION LAUNCH
-                            </h2>
-                            <p className="text-white/60 leading-relaxed text-sm max-w-4xl font-light">
-                                <strong className="text-white">Launch Day for DecoponATX.</strong> Primary objective is building momentum with 50 contacts and 15 emails sent.
-                                Musha Shugyo content rhythm is established. BJJ at noon provides the physical break needed for afternoon execution.
-                            </p>
-                            <div className="mt-4 text-xs font-mono text-emerald-500/80 border-l border-emerald-500/20 pl-3">
-                                DIRECTIVE: REVENUE NOW. DON'T WAIT.
-                            </div>
-                        </div>
+                    <div className="flex flex-col items-end gap-1">
+                        <span className="text-[10px] font-mono text-black/40 dark:text-white/40 uppercase tracking-wider hidden sm:block">Biometrics Status</span>
+                        <BiometricsBar
+                            data={localOuraData}
+                            insights={localOuraInsights}
+                            onSync={handleOuraSync}
+                            isLoading={isOuraLoading}
+                        />
                     </div>
                 </div>
 
-                {/* Oura Recovery Widget */}
-                <OuraWidget
-                    data={localOuraData}
-                    insights={localOuraInsights}
-                    onSync={handleOuraSync}
-                    isLoading={isOuraLoading}
+                {/* Status Brief Card */}
+                <StatusBriefCard
+                    brief={commandBrief?.statusBrief || null}
+                    patterns={commandBrief?.patterns || []}
+                    generatedAt={commandBrief?.generatedAt}
+                    cached={commandBrief?.cached}
+                    cacheAge={commandBrief?.cacheAge}
+                    isLoading={isBriefLoading}
                 />
 
                 {/* Main Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    {/* Left Column (Priorities) */}
+                    {/* Left Column - Execution Flow: Tasks → Projects → Goals */}
                     <div className="lg:col-span-7 space-y-6">
-                        {/* Focus & Recommendations */}
-                        <div className="stealth-card p-6">
-                            <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/5">
-                                <div className="flex items-center gap-2">
-                                    <div className="text-emerald-500">
-                                        <span className="font-mono text-lg font-bold">!</span>
-                                    </div>
-                                    <h3 className="font-bold font-display text-white tracking-wide text-sm">
-                                        CRITICAL ACTIONS
-                                    </h3>
-                                </div>
-                                <span className="text-[10px] font-mono text-white/30">PRIORITY QUEUE</span>
-                            </div>
+                        {/* Today's Tasks */}
+                        <RecommendationsWidget
+                            recommendations={commandBrief?.recommendations || []}
+                            tasks={tasks}
+                            onTaskComplete={handleTaskComplete}
+                        />
 
-                            {/* Top Priorities Section */}
-                            <div className="mb-8">
-                                <h4 className="text-white/40 text-[10px] font-bold font-mono uppercase tracking-widest mb-4 flex items-center gap-2">
-                                    TODAY'S TARGETS
-                                </h4>
-                                <div className="space-y-2">
-                                    {todayTasks.length > 0 ? (
-                                        todayTasks.map((task) => (
-                                            <div
-                                                key={task.id}
-                                                className={`p-4 rounded-[2px] border flex items-start gap-4 transition-all group cursor-pointer ${
-                                                    isCompleted(task)
-                                                        ? 'bg-white/5 border-white/10 opacity-50'
-                                                        : 'bg-[#0F0F0F] border-white/5 hover:border-emerald-500/30'
-                                                }`}
-                                            >
-                                                <div className="mt-0.5 text-emerald-500">
-                                                    {isCompleted(task) ? (
-                                                        <CheckCircle2 size={16} />
-                                                    ) : (
-                                                        <Circle size={16} className="text-white/20 group-hover:text-emerald-500" />
-                                                    )}
-                                                </div>
-                                                <div className="flex-1">
-                                                    <p className={`text-sm font-medium ${
-                                                        isCompleted(task)
-                                                            ? 'text-white/40 line-through decoration-white/20'
-                                                            : 'text-white'
-                                                    }`}>
-                                                        {task.title}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <div className="p-4 text-center text-white/30 font-mono text-xs border border-dashed border-white/10 rounded-[2px]">
-                                            No high priority tasks remaining. Good work.
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
+                        {/* Project Progress */}
+                        <TimeAllocationWidget
+                            allocations={commandBrief?.timeAllocation || []}
+                        />
 
-                            {/* Recommendations Section */}
-                            <div>
-                                <h4 className="text-white/40 text-[10px] font-bold font-mono uppercase tracking-widest mb-4 flex items-center gap-2">
-                                    CO-PILOT INTEL
-                                </h4>
-                                <div className="space-y-2">
-                                    <div className="group relative p-4 rounded-[2px] bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-all flex gap-4 items-start">
-                                        <div className="w-5 h-5 rounded-sm bg-white/10 text-white/60 font-mono font-bold flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">
-                                            1
-                                        </div>
-                                        <div className="flex-1">
-                                            <div className="flex justify-between items-start">
-                                                <h5 className="text-white text-sm font-bold font-display tracking-wide">
-                                                    Execute outreach batch 1
-                                                </h5>
-                                                <div className="flex gap-2">
-                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-[2px] bg-red-500/10 text-red-400 border border-red-500/20">
-                                                        HIGH IMPACT
-                                                    </span>
-                                                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-[2px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                                                        ⚡ 95%
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <p className="text-white/50 text-xs mt-1 font-light">
-                                                1:30-2:30pm block. Don't overthink tools.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <GoalWidget goals={goals} />
+                        {/* Strategic Goals */}
+                        <GoalAlignmentWidget />
                     </div>
 
-                    {/* Right Column (Schedule, Email, etc) */}
+                    {/* Right Column - Status & Habits */}
                     <div className="lg:col-span-5 space-y-6">
-                        {/* Time Allocation */}
-                        <div className="stealth-card p-6">
-                            <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/5">
-                                <Calendar className="text-white/40" size={16} />
-                                <h3 className="font-bold font-display text-white tracking-wide text-sm">
-                                    TIME ALLOCATION
-                                </h3>
-                            </div>
-                            <div className="space-y-3 mb-8 text-xs font-mono text-emerald-500/80 bg-emerald-900/10 p-4 rounded-[2px] border border-emerald-500/20">
-                                <div className="flex items-center gap-2">
-                                    <div className="w-1 h-1 bg-emerald-500 rounded-full"></div>
-                                    <span>MUSHA SHUGYO: 1H 45M / DAY</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-1 h-1 bg-emerald-500 rounded-full"></div>
-                                    <span>DECOPONATX: 6-8H / DAY</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-1 h-1 bg-emerald-500 rounded-full"></div>
-                                    <span>TRAINING: 1H (MON/WED)</span>
-                                </div>
-                            </div>
-                            <div className="relative space-y-6 pl-4 before:absolute before:left-[5px] before:top-2 before:h-full before:w-[1px] before:bg-white/10">
-                                <div className="relative pl-6 group">
-                                    <div className="absolute left-[-2px] top-1.5 w-[15px] h-[1px] bg-white/20"></div>
-                                    <div className="text-xs text-white/30 font-mono mb-1">07:00</div>
-                                    <div className="text-white font-bold font-display text-sm group-hover:text-emerald-400 transition-colors">
-                                        Musha Shugyo Content Block
-                                    </div>
-                                    <div className="flex gap-2 text-[10px] text-white/40 mt-1 font-mono uppercase tracking-wide">
-                                        <Clock size={10} /> 1.5h
-                                    </div>
-                                </div>
-                                <div className="relative pl-6 group">
-                                    <div className="absolute left-[-2px] top-1.5 w-[15px] h-[1px] bg-emerald-500"></div>
-                                    <div className="text-xs text-white/30 font-mono mb-1">12:00</div>
-                                    <div className="text-white font-bold font-display text-sm group-hover:text-emerald-400 transition-colors">
-                                        BJJ Training
-                                    </div>
-                                    <div className="flex gap-2 text-[10px] text-white/40 mt-1 font-mono uppercase tracking-wide">
-                                        <Clock size={10} /> 1h // Six Blades
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        {/* Human 3.0 Quadrant Summary */}
+                        <QuadrantSummaryWidget summary={commandBrief?.quadrantSummary || null} />
 
-                        {/* Decopon Outreach */}
-                        <div className="stealth-card p-6">
-                            <div className="flex items-center justify-between mb-6">
-                                <div className="flex items-center gap-3">
-                                    <Mail className="text-white/40" size={16} />
-                                    <h3 className="font-bold font-display text-white tracking-wide text-sm">
-                                        DECOPON OUTREACH
-                                    </h3>
-                                </div>
-                                <span className="text-2xl font-bold font-display text-white">
-                                    0<span className="text-white/30 text-lg">/90</span>
-                                </span>
-                            </div>
+                        {/* Recovery Routine (Sean's daily exercises) */}
+                        <RecoveryRoutineWidget />
 
-                            <div className="grid grid-cols-3 gap-2 mb-6">
-                                <div className="bg-white/5 border border-white/10 rounded-[2px] p-3 text-center">
-                                    <div className="text-white font-bold text-lg font-display">50</div>
-                                    <div className="text-[9px] text-white/40 uppercase tracking-widest font-mono mt-1">
-                                        PROSPECTS
-                                    </div>
-                                </div>
-                                <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-[2px] p-3 text-center">
-                                    <div className="text-emerald-400 font-bold text-lg font-display">0</div>
-                                    <div className="text-[9px] text-emerald-500/60 uppercase tracking-widest font-mono mt-1">
-                                        REPLIES
-                                    </div>
-                                </div>
-                                <div className="bg-white/5 border border-white/10 rounded-[2px] p-3 text-center">
-                                    <div className="text-white font-bold text-lg font-display">0</div>
-                                    <div className="text-[9px] text-white/40 uppercase tracking-widest font-mono mt-1">
-                                        CALLS
-                                    </div>
-                                </div>
+                        {/* Content Ralph */}
+                        <ContentRalphWidget />
+
+                        {/* Context Sources (debug info) */}
+                        {commandBrief?.contextSources && (
+                            <div className="text-[10px] font-mono text-black/20 dark:text-white/20 px-2">
+                                Sources: {commandBrief.contextSources.join(', ')}
                             </div>
-                        </div>
+                        )}
                     </div>
                 </div>
             </div>
